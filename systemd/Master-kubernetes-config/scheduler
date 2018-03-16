@@ -1,0 +1,3 @@
+vi /etc/kubernetes/scheduler
+
+KUBE_SCHEDULER_ARGS="--leader-elect=true --address=127.0.0.1"
