@@ -26,3 +26,8 @@ GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
 更新grub并重启可以解决
 $ sudo update-grub
 $ sudo reboot
+
+3. 三台机器etcd下载：
+https://github.com/coreos/etcd/releases/
+将etcd和etcdctl文件复制到/usr/bin目录（官网复制/usr/local/bin）
+# etcdctl cluster-health (验证etcd是否正确开启)
