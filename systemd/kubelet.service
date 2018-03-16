@@ -1,0 +1,16 @@
+kubelet.service
+
+[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=/etc/kubernetes/kubelet-d
+ExecStart=/usr/local/bin/kubelet $KUBELET_ARGS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
