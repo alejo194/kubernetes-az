@@ -10,7 +10,7 @@ flannel version: v0.7.1
 docker version: 1.12.6
 
 注意：
-1. 在一个安全的内部网络环境中可以关闭防火墙服务：
+1. Master 和 Node之间有大量的网络通信，在一个安全的内部网络环境中可以关闭防火墙服务：
 # systemctl disable firewalld
 # systemctl stop firewalld
 将Kubernetes的可执行文件复制到/usr/bin(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
