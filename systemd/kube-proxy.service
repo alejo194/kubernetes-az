@@ -1,4 +1,4 @@
-vi /etc/kubernetes/kube-proxy.service
+vi /etc/systemd/system/kube-proxy.service
 
 [Unit]
 Description=Kubernetes Kube-Proxy Server
