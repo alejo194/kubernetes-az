@@ -16,7 +16,7 @@ docker version: 1.12.6 <br/>
 $ systemctl disable firewalld
 $ systemctl stop firewalld
 ```
-> 将Kubernetes的可执行文件复制到`/usr/bin`(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
+将Kubernetes的可执行文件复制到`/usr/bin`(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
 
 2. 在Debian8 上 cgroup memory swapaccount 默认没有enable: <br/>
 会出现如 <br/>
