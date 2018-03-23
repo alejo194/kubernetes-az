@@ -18,11 +18,11 @@ $ systemctl stop firewalld
 ```
 将Kubernetes的可执行文件复制到/usr/bin(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
 
-2. 在Debian8 上 cgroup memory swapaccount 默认没有enable
-会出现如
-kube-controller-manager开启报错
-[plain]  E0221 18:12:14.791503   16229 kubelet.go:1228] Failed to start ContainerManager system validation failed - Following Cgroup subsystem not mounted: [memory]  
-ContainerManager system 无法启动从而造成容器无法被启动
+2. 在Debian8 上 cgroup memory swapaccount 默认没有enable:
+会出现如 <br/>
+kube-controller-manager开启报错<br/>
+[plain]  E0221 18:12:14.791503   16229 kubelet.go:1228] Failed to start ContainerManager system validation failed - Following Cgroup subsystem not mounted: [memory]  <br/>
+ContainerManager system 无法启动从而造成容器无法被启动 <br/>
 解决方法：
 ```bash
 vi /etc/default/grup中添加下面一行
