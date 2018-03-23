@@ -33,4 +33,6 @@ $ sudo reboot
 3. 三台机器etcd下载：
 https://github.com/coreos/etcd/releases/
 将etcd和etcdctl文件复制到/usr/bin目录（官网复制/usr/local/bin）
+```bash
 $ etcdctl cluster-health (验证etcd是否正确开启)
+```
