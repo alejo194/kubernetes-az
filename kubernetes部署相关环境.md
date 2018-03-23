@@ -1,9 +1,10 @@
 ## 安装部署环境：
 1. 三台debian8 64位 ，2核cpu, memory 10G <br/>
+```bash
 192.168.40.171  Master(etcd) <br/>
 192.168.40.172  Node(etcd, docker, flannel) <br/>
 192.168.40.173  Node(etcd, docker, flannel) <br/>
-
+```
 kubernetes v1.6.2 (kube-apiserver, kube-controller-manager, kube-scheduler, kubelet, kube-proxy, kubectl) <br/>
 etcd version: 3.3.0-rc.3 (etcd服务作为Kubernetes集群的主资料库，在安装Kubernetes各服务之前需要首先安装和启动) <br/>
 flannel version: v0.7.1 (采用覆盖式网络Overlay Network模型来完成对网络的打通) <br/>
