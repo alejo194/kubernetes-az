@@ -24,12 +24,13 @@ kube-controller-manager开启报错
 [plain]  E0221 18:12:14.791503   16229 kubelet.go:1228] Failed to start ContainerManager system validation failed - Following Cgroup subsystem not mounted: [memory]  
 ContainerManager system 无法启动从而造成容器无法被启动
 解决方法：
+```bash
 vi /etc/default/grup中添加下面一行
 GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1" 
 更新grub并重启可以解决
 $ sudo update-grub
 $ sudo reboot
-
+```
 3. 三台机器etcd下载：
 https://github.com/coreos/etcd/releases/
 将etcd和etcdctl文件复制到/usr/bin目录（官网复制/usr/local/bin）
