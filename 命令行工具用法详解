@@ -18,3 +18,4 @@ $ kubectl create -f <directory>
 6.查看容器的日志
 
 
+[我的测试](https://www.baidu.com)
