@@ -1,5 +1,5 @@
 ## 安装部署环境：
-1.三台debian8 64位 ，2核cpu, memory 10G <br/>
+1. 三台debian8 64位 ，2核cpu, memory 10G <br/>
 192.168.40.171  Master(etcd) <br/>
 192.168.40.172  Node(etcd, docker, flannel) <br/>
 192.168.40.173  Node(etcd, docker, flannel) <br/>
