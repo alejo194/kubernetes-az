@@ -4,10 +4,10 @@
 192.168.40.172  Node(etcd, docker, flannel) <br/>
 192.168.40.173  Node(etcd, docker, flannel) <br/>
 
-kubernetes v1.6.2 (kube-apiserver, kube-controller-manager, kube-scheduler, kubelet, kube-proxy, kubectl)
-etcd version: 3.3.0-rc.3 (etcd服务作为Kubernetes集群的主资料库，在安装Kubernetes各服务之前需要首先安装和启动)
-flannel version: v0.7.1 (采用覆盖式网络Overlay Network模型来完成对网络的打通)
-docker version: 1.12.6
+kubernetes v1.6.2 (kube-apiserver, kube-controller-manager, kube-scheduler, kubelet, kube-proxy, kubectl) <br/>
+etcd version: 3.3.0-rc.3 (etcd服务作为Kubernetes集群的主资料库，在安装Kubernetes各服务之前需要首先安装和启动) <br/>
+flannel version: v0.7.1 (采用覆盖式网络Overlay Network模型来完成对网络的打通) <br/>
+docker version: 1.12.6 <br/>
 
 注意：
 1. Master 和 Node之间有大量的网络通信，在一个安全的内部网络环境中可以关闭防火墙服务：
