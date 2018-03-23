@@ -1,4 +1,4 @@
-    kubectl  [command]  [TYPE]  [NAME]  [flags]
+kubectl  [command]  [TYPE]  [NAME]  [flags]
 
 kubectl常用操作示例
 1.创建资源对象
@@ -16,3 +16,5 @@ $ kubectl create -f <directory>
 5.执行容器的命令
 
 6.查看容器的日志
+
+测试
