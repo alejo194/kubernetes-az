@@ -16,7 +16,7 @@ docker version: 1.12.6 <br/>
 $ systemctl disable firewalld
 $ systemctl stop firewalld
 ```
-将Kubernetes的可执行文件复制到/usr/bin(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
+> 将Kubernetes的可执行文件复制到`/usr/bin`(如果要复制到其他目录，则将systemd服务文件中的文件路径修改正确即可)
 
 2. 在Debian8 上 cgroup memory swapaccount 默认没有enable: <br/>
 会出现如 <br/>
@@ -32,8 +32,8 @@ $ sudo update-grub
 $ sudo reboot
 ```
 3. 三台机器etcd下载：<br/>
-https://github.com/coreos/etcd/releases/ <br/>
-将etcd和etcdctl文件复制到/usr/bin目录（官网复制/usr/local/bin） <br/>
+[etcd下载](https://github.com/coreos/etcd/releases/) <br/>
+将etcd和etcdctl文件复制到`/usr/bin`目录（官网复制`/usr/local/bin`） <br/>
 ```bash
 $ etcdctl cluster-health (验证etcd是否正确开启)
 ```
