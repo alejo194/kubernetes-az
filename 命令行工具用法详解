@@ -1,1 +1,18 @@
-kubectl  [command]  [TYPE]  [NAME]  [flags]
+#kubectl  [command]  [TYPE]  [NAME]  [flags]
+
+kubectl常用操作示例
+1.创建资源对象
+根据yaml配置文件一次性创建service 和 rc:
+$ kubectl create -f my-service.yaml -f my-rc.yaml
+根据<directory>目录下所有.yaml、 .yml、 .json文件的定义进行创建操作：
+$ kubectl create -f <directory>
+
+2.查看资源对象
+
+3.描述资源对象
+
+4.删除资源对象
+
+5.执行容器的命令
+
+6.查看容器的日志
