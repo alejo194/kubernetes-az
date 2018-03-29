@@ -80,5 +80,6 @@ EOF
 ```
 + 指定 etcd 的工作目录和数据目录为 /var/lib/etcd，需在启动服务前创建这个目录；
 + 为了保证通信安全，需要指定 etcd 的公私钥(cert-file和key-file)、Peers 通信的公私钥和 CA 证书(peer-cert-file、peer-key-file、peer-trusted-ca-file)、客户端的CA证书（trusted-ca-file）；
-+ --initial-cluster-state 值为 new 时，--name 的参数值必须位于 --initial-cluster 列表中；
++ --initial-cluster-state 值为 new 时，--name 的参数值必须位于 --initial-cluster 列表中；<br/>
 完整 unit 文件见：[etcd.service](https://github.com/alejo194/kubernetes-az/blob/master/systemd/etcd.service)
+
