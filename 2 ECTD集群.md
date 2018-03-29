@@ -1,5 +1,5 @@
 ### 安装etcd
-> 官网下载最新的二进制文件etcd https://github.com/coreos/etcd/releases/
+> 官网下载最新的二进制文件etcd https://github.com/coreos/etcd/releases/ <br/>
 > 本测试环境用的etcd version：v3.3.0
 
 ### 创建 TLS 秘钥和证书
@@ -83,3 +83,7 @@ EOF
 + --initial-cluster-state 值为 new 时，--name 的参数值必须位于 --initial-cluster 列表中；<br/>
 完整 unit 文件见：[etcd.service](https://github.com/alejo194/kubernetes-az/blob/master/systemd/etcd.service)
 
+### 启动 etcd 服务
+```bash
+
+```
