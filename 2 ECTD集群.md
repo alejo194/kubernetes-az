@@ -90,3 +90,8 @@ $ sudo systemctl enable etcd
 $ sudo systemctl start etcd
 $ systemctl status etcd
 ```
+### 验证服务
+```bash
+etcdctl member list 
+etcdctl cluster-health
+```
