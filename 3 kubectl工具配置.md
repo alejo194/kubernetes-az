@@ -105,9 +105,9 @@ kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 ## 分发kubeconfig文件
 如果一切顺利的话, 在/etc/kubernetes文件夹和用户文件夹可以看到这些
 ls -lh ~/.kube
-![kube下文件]()
+![kube下文件](./images/kube.png)
 ls -lh /etc/kubernetes
-![kubernetes下文件]()
+![kubernetes下文件](./images/bootstrap.png)
 确定无误之后
 + 将token.csv复制到其他master相对应的/etc/kubernetes中, 供kube-apiserver使用;
 + 将bootstrap.kubeconfig和kube-proxy.kubeconfig复制到其他node节点的/etc/kubernetes中, 供kubele和kube-proxy使用
