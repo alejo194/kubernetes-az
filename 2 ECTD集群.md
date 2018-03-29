@@ -95,3 +95,4 @@ $ systemctl status etcd
 etcdctl member list 
 etcdctl cluster-health
 ```
+> 如果要配置https, 需要自己配置证书, 这类资料很多, 这里不做介绍, 另外生产环境最好配置auth认证, 提升安全性
