@@ -85,5 +85,8 @@ EOF
 
 ### 启动 etcd 服务
 ```bash
-
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable etcd
+$ sudo systemctl start etcd
+$ systemctl status etcd
 ```
