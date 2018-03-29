@@ -34,3 +34,6 @@ kubectl config set-context kubernetes \
 # 设置默认上下文
 kubectl config use-context kubernetes
 ```
++ KUBE_APISERVER 这里指定SLB的地址, 因为我们是通过SLB来请求master的kube-apiserver.
++ admin.pem 证书 OU 字段值为 system:masters，kube-apiserver 预定义的 RoleBinding cluster-admin 将 Group system:masters 与 Role cluster-admin 绑定，该 Role 授予了调用kube-apiserver 相关 API 的权限；
++ 生成的 kubeconfig 被保存到 ~/.kube/config 文件；
