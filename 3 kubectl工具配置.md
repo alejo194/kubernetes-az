@@ -103,12 +103,12 @@ kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 + 设置集群参数和客户端认证参数时 --embed-certs 都为 true，这会将 certificate-authority、client-certificate 和 client-key 指向的证书文件内容写入到生成的 kube-proxy.kubeconfig 文件中；
 + kube-proxy.pem 证书中 CN 为 system:kube-proxy，kube-apiserver 预定义的 RoleBinding cluster-admin 将User system:kube-proxy 与 Role system:node-proxier 绑定，该 Role 授予了调用 kube-apiserver Proxy 相关 API 的权限；
 ## 分发kubeconfig文件
-如果一切顺利的话, 在/etc/kubernetes文件夹和用户文件夹可以看到这些
-ls -lh ~/.kube
+如果一切顺利的话, 在/etc/kubernetes文件夹和用户文件夹可以看到这些 <br\>
+ls -lh ~/.kube <br\>
 ![kube下文件](./images/kube.png)
-ls -lh /etc/kubernetes
+ls -lh /etc/kubernetes <br\>
 ![kubernetes下文件](./images/bootstrap.png)
-确定无误之后
+确定无误之后 <br\>
 + 将token.csv复制到其他master相对应的/etc/kubernetes中, 供kube-apiserver使用;
 + 将bootstrap.kubeconfig和kube-proxy.kubeconfig复制到其他node节点的/etc/kubernetes中, 供kubele和kube-proxy使用
 + 将~/.kube/config复制到任意想使用kubectl命令行工具的服务器中
