@@ -131,5 +131,5 @@ systemctl status kube-scheduler -l
 ```
 ### 5.验证master节点功能
 4个配置文件 <br/>
-
+![master配置文件存放地方](./images/kube-config.png)
 
