@@ -9,7 +9,7 @@
 ### 检查服务环境
 ![kubernetes环境](./images/kube-bin.png)
 
-### 2.配置和启动
+### 2.配置和启动kube-apiserver
 ```bash
 vi /etc/systemd/system/kube-apiserver.service
 [Unit]
@@ -46,7 +46,9 @@ KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=0"
 KUBE_ALLOW_PRIV="--allow-privileged=true"
 KUBE_MASTER="--master=http://192.168.40.171:8080"
-
+```
+> --master 配置成自己的8080端口就可以了
+```bash
 vi /etc/kubernetes/apiserver
 KUBE_API_ADDRESS="--advertise-address=192.168.40.171 --bind-address=192.168.40.171 --insecure-bind-address=192.168.40.171"
 KUBE_ETCD_SERVERS="--etcd-servers=http://192.168.40.171:2379,http://192.168.40.172:2379,http://192.168.40.173:2379"
@@ -54,3 +56,15 @@ KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
 KUBE_ADMISSION_CONTROL="--admission-control=ServiceAccount,NamespaceLifecycle,NamespaceExists,LimitRanger,ResourceQuota"
 KUBE_API_ARGS="--authorization-mode=RBAC --runtime-config=rbac.authorization.k8s.io/v1beta1 --kubelet-https=true --experimental-bootstrap-token-auth --token-auth-file=/etc/kubernetes/token.csv --service-node-port-range=30000-32767 --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem --client-ca-file=/etc/kubernetes/ssl/ca.pem --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem --enable-swagger-ui=true --apiserver-count=3 --audit-log-maxage=30 --audit-log-maxbackup=3 --audit-log-maxsize=100 --audit-log-path=/var/lib/audit.log --event-ttl=1h"
 ```
++ KUBE_API_ADDRESS: 注意绑定的IP地址 不要 写成127.0.0.1, 要写成具体的IP地址(如果是阿里云的经典网络, 最好选择内网地址, 提升网络传输)
++ KUBE_ETCD_SERVERS: 注意ETCD集群地址写法
++ KUBE_SERVICE_ADDRESSES: 这个统一固定就好, 要和前面生成证书所指定的地址段一致
+```bash
+# 保存配置文件, 并启动kube-apiserver
+systemctl daemon-reload
+systemctl enable kube-apiserver
+systemctl start kube-apiserver
+systemctl status kube-apiserver -l
+```
+### 3.配置和启动kube-controller-manager
+
