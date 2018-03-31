@@ -100,6 +100,36 @@ systemctl enable kube-controller-manager
 systemctl start kube-controller-manager
 systemctl status kube-controller-manager -l
 ```
+### 4.配置和启动kube-scheduler
+```bash
+vi /etc/systemd/system/kube-scheduler.service
+[Unit]
+Description=Kubernetes Scheduler Plugin
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
+[Service]
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/kubernetes/scheduler
+ExecStart=/usr/local/bin/kube-scheduler \
+        $KUBE_LOGTOSTDERR \
+        $KUBE_LOG_LEVEL \
+        $KUBE_MASTER \
+        $KUBE_SCHEDULER_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+################################
+vi /etc/kubernetes/scheduler
+KUBE_SCHEDULER_ARGS="--leader-elect=true --address=127.0.0.1"
+```
++ -address 值必须为 127.0.0.1，因为当前 kube-apiserver 期望 scheduler 和 controller-manager 在同一台机器；
+```bash
+# 保存配置并启动
+systemctl daemon-reload
+systemctl enable kube-scheduler
+systemctl start kube-scheduler
+systemctl status kube-scheduler -l
+```
+### 5.验证master节点功能
+4个配置文件 <br/>
 
 
