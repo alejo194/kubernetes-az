@@ -5,3 +5,9 @@
 ls -lh /etc/kubernetes/ssl
 ```
 ![检查证书环境](./images/kubernetes-ssl.png)
+### 检查kubectl工具类环境
+![kubectl环境](./images/kubectl.png)
+### 检查当前用户信息
+![]()
+### 检查服务环境
+
