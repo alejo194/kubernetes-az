@@ -3,5 +3,5 @@
 ### 检查证书环境
 ```bash
 ls -lh /etc/kubernetes/ssl
-![检查证书环境](./images/kubernetes-ssl.png)
 ```
+![检查证书环境](./images/kubernetes-ssl.png)
