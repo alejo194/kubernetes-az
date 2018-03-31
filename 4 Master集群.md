@@ -136,4 +136,12 @@ systemctl status kube-scheduler -l
 # 查看节点状态
 kubectl get componentstatuses
 ```
-![]()
+![节点状态](./images/componentstatuses.png)
+```bash
+# 查看端口情况
+netstat -nltp
+```
+![查看接口](./images/process-status.png)
+> 其他几台master也需要按照上述相同的配置, 只需要把相对应的ip地址换成自己的, 记住, 证书一定要相同
+
+
