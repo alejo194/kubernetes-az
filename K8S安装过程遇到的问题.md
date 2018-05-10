@@ -79,7 +79,7 @@ vi /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=cgroupfs"]
 }
-没有这个daemon.json文件 docker Cgroup Driver: cgroupfs
+没有这个daemon.json文件 docker默认 Cgroup Driver: cgroupfs
 ```
 ##### 重启docker
 ```bash
