@@ -25,6 +25,14 @@ $ wget https://github.com/coreos/flannel/releases/download/v0.7.1/flannel-v0.7.1
 $ tar -xzvf flannel-v0.7.1-linux-amd64.tar.gz -C flannel
 $ sudo cp flannel/{flanneld,mk-docker-opts.sh} /usr/local/bin
 ```
+#### 向 etcd 写入集群 Pod 网段信息
+> 注意：本步骤只需在第一次部署 Flannel 网络时执行，后续在其它节点上部署 Flannel 时无需再写入该信息！
+```bash
+etcdctl --endpoints=http://192.168.1.50:2379,http://192.168.1.51:2379 \
+set /kubernetes/network/config \
+'{"Network":"172.30.0.0/16","SubnetLen":24,"Backend":{"Type":"vxlan"}}'
+```
+
 #### 创建 flanneld 的 systemd unit 文件
 ```bash
 vi /etc/systemd/system/flanneld.service
@@ -48,8 +56,14 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 RequiredBy=docker.service
-```
 
+# 设置开机启动并启动
+systemctl enable flanneld --加入开机启动
+systemctl start flanneld
+systemctl status flanneld -l
+```
+#### 当服务启动后, 可以在/run/flannel文件夹下看到两个文件
+![Flannel开启后/run/flannel下文件](./images/flannel-run.png)
 
 ### 4.安装和配置kubelet
 
