@@ -138,10 +138,58 @@ KUBELET_ARGS="--logtostderr=true --v=0 --allow-privileged=true --address=192.168
 ```
 + --address 不能设置为 127.0.0.1，否则后续 Pods 访问 kubelet 的 API 接口时会失败，因为 Pods 访问的 127.0.0.1 指向自己而不是 kubelet；
 + 如果设置了 --hostname-override 选项，则 kube-proxy 也需要设置该选项，否则会出现找不到 Node 的情况；
-+ --cgroup-driver 配置成 systemd，不要使用cgroup，否则在 CentOS 系统中 kubelet 讲启动失败。（各个系统不一样，用docker info查看debian中的信息）
-
++ --cgroup-driver 配置成 systemd，不要使用cgroup，否则在 CentOS 系统中 kubelet 讲启动失败。（***各系统不一样，用docker info查看debian中的信息***）
+```bash
+systemctl daemon-reload
+systemctl enable kubelet
+systemctl start kubelet
+systemctl status kubelet -l
+```
 
 ### 5.安装和配置kube-proxy
+```bash
+vi /etc/systemd/system/kube-proxy.service
+[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/kubernetes/proxy
+ExecStart=/usr/local/bin/kube-proxy \
+    $KUBE_LOGTOSTDERR \
+    $KUBE_LOG_LEVEL \
+    $KUBE_MASTER \
+    $KUBE_PROXY_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+```
+#### config文件
+```bash
+vi /etc/kubernetes/config
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=0"
+KUBE_ALLOW_PRIV="--allow-privileged=true"
+KUBE_MASTER="--master=http://192.168.40.171:8080"
+
+################################################################################
+
+vi /etc/kubernetes/proxy
+KUBE_PROXY_ARGS="--bind-address=192.168.40.172 --hostname-override=192.168.40.172 --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig --cluster-cidr=10.254.0.0/16"
+# bind-address,hostname-override各机器不用
+```
++ --hostname-override 参数值必须与 kubelet 的值一致，否则 kube-proxy 启动后会找不到该 Node
+#### 启动
+```bash
+systemctl daemon-reload
+systemctl enable kube-proxy
+systemctl start kube-proxy
+systemctl status kube-proxy -l
+```
 
 ### 6.验证
 
