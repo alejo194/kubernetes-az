@@ -2,6 +2,8 @@
 请先确保前面的环境正常, 再进行这一步, 否则出现的各种错误很难定位</br>
 #### 检查证书环境
 ![检查证书环境](./images/kubernetes-ssl.png)
+#### 检查kubelet和kube-proxy环境
+
 
 ### 2.k8s运行环境
 
