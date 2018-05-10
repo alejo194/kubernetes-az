@@ -194,4 +194,6 @@ systemctl status kube-proxy -l
 ### 6.验证
 查看服务启动情况
 ![查看服务启动](./images/kubelet-proxy-network.png)
+查看节点情况
+![查看节点](./images/kube-nodes.png)
 
