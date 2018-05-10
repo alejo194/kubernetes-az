@@ -17,6 +17,9 @@ scp -rp /root/kubernetes/server/bin/{kubectl,kubelet,kube-proxy} root@192.168.40
 > Node只需要启动2个服务, 分别为kubelet, kube-proxy(master可以是node)
 
 ### 3.安装配置Docker和Flannel
+> Docker 安装参考官网 Docker version 1.12.6 
+#### Flannel安装
+
 
 ### 4.安装和配置kubelet
 
