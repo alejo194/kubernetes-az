@@ -60,17 +60,13 @@ Insecure Registries:
  
  #### 网上查找相关只有如下
  [原网页地址](https://github.com/gyliu513/kubernetes-handbook-1/blob/master/FAQ.md)
- ```bash
+
  3.Kubelet启动时Failed to start ContainerManager systemd version does not support ability to start a slice as transient unit
-CentOS系统版本7.2.1511
+CentOS系统版本7.2.1511</br>
+kubelet启动时报错systemd版本不支持start a slice as transient unit。</br>
+尝试升级CentOS版本到7.3，看看是否可以修复该问题。</br>
+与[kubeadm init waiting for the control plane to become ready on CentOS 7.2 with kubeadm 1.6.1](https://github.com/kubernetes/kubeadm/issues/228) #228类似。</br>
 
-kubelet启动时报错systemd版本不支持start a slice as transient unit。
+另外有一个使用systemd管理kubelet的proposal。</br>
 
-尝试升级CentOS版本到7.3，看看是否可以修复该问题。
-
-与[kubeadm init waiting for the control plane to become ready on CentOS 7.2 with kubeadm 1.6.1](https://github.com/kubernetes/kubeadm/issues/228) #228类似。
-
-
-另外有一个使用systemd管理kubelet的proposal。
-```
 
