@@ -104,6 +104,13 @@ vi /etc/kubernetes/kubelet-d
 systemctl daemon-reload
 systemctl restart kubelet.service
 ```
-
+##### 检查
+```bash
+kubectl get no
+NAME             STATUS    AGE       VERSION
+192.168.40.171   Ready     1h        v1.6.2
+192.168.40.172   Ready     56d       v1.6.2
+192.168.40.173   Ready     56d       v1.6.2
+```
 
 
