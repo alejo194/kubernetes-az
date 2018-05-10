@@ -59,6 +59,13 @@ Insecure Registries:
  
  ##### 开启kubelet报错
  ![kubelet报错](./images/kubelet-error.png)
+ ```bash
+kubectl get no
+NAME             STATUS     AGE       VERSION
+192.168.40.171   NotReady   39m       v1.6.2
+192.168.40.172   Ready      56d       v1.6.2
+192.168.40.173   Ready      55d       v1.6.2
+```
  
  ##### 网上查找相关只有如下
  [原网页地址](https://github.com/gyliu513/kubernetes-handbook-1/blob/master/FAQ.md)
@@ -69,13 +76,7 @@ kubelet启动时报错systemd版本不支持start a slice as transient unit。</
 与[kubeadm init waiting for the control plane to become ready on CentOS 7.2 with kubeadm 1.6.1](https://github.com/kubernetes/kubeadm/issues/228) #228类似。</br>
 
 另外有一个使用systemd管理kubelet的proposal。</br>
-```bash
-kubectl get no
-NAME             STATUS     AGE       VERSION
-192.168.40.171   NotReady   39m       v1.6.2
-192.168.40.172   Ready      56d       v1.6.2
-192.168.40.173   Ready      55d       v1.6.2
-```
+
 > 但不知如何解决问题
 
 
