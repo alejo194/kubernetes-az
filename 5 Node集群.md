@@ -113,6 +113,33 @@ etcdctl --endpoints=http://192.168.40.171:2379,http://192.168.40.172:2379,http:/
 ```
 
 ### 4.安装和配置kubelet
+```bash
+vi /etc/systemd/system/kubelet.service
+[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=/etc/kubernetes/kubelet-d
+ExecStart=/usr/local/bin/kubelet $KUBELET_ARGS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+#### config文件
+```bash
+KUBELET_ARGS="--logtostderr=true --v=0 --allow-privileged=true --address=192.168.40.172 --hostname-override=192.168.40.172 --api-servers=https://192.168.40.171:8080  --cgroup-driver=cgroupfs --cluster-dns=10.254.0.2 --experimental-bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --require-kubeconfig --cert-dir=/etc/kubernetes/ssl --cluster-domain=cluster.local --hairpin-mode promiscuous-bridge --serialize-image-pulls=false"
+
+#各个机器address，hostname-override做相应修改
+```
+--address 不能设置为 127.0.0.1，否则后续 Pods 访问 kubelet 的 API 接口时会失败，因为 Pods 访问的 127.0.0.1 指向自己而不是 kubelet；
+如果设置了 --hostname-override 选项，则 kube-proxy 也需要设置该选项，否则会出现找不到 Node 的情况；
+--cgroup-driver 配置成 systemd，不要使用cgroup，否则在 CentOS 系统中 kubelet 讲启动失败。
+
 
 ### 5.安装和配置kube-proxy
 
