@@ -8,6 +8,13 @@
 ![kubectl环境](./images/node-kubectl.png)
 
 ### 2.k8s运行环境
+#### 将master可执行文件目录远程复制过来
+```bash
+下载kubernetes server 所在目录
+scp -rp /root/kubernetes/server/bin/{kubectl,kubelet,kube-proxy} root@192.168.40.172:/usr/local/bin/
+这里kubectl copy到各机器方便查询
+```
+> Node只需要启动2个服务, 分别为kubelet, kube-proxy(master可以是node)
 
 ### 3.安装配置Docker和Flannel
 
