@@ -69,6 +69,7 @@ kubelet启动时报错systemd版本不支持start a slice as transient unit。
 尝试升级CentOS版本到7.3，看看是否可以修复该问题。
 
 与kubeadm init waiting for the control plane to become ready on CentOS 7.2 with kubeadm 1.6.1 #228类似。
+https://github.com/kubernetes/kubeadm/issues/228
 
 另外有一个使用systemd管理kubelet的proposal。
 ```
