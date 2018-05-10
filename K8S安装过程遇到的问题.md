@@ -71,6 +71,8 @@ kubelet启动时报错systemd版本不支持start a slice as transient unit。</
 另外有一个使用systemd管理kubelet的proposal。</br>
 > 但不知如何解决问题
 
+
+#### 另一种解决方式
 ##### 修改 docker Cgroup Driver: cgroupfs
 ```bash
 vi /etc/docker/daemon.json
