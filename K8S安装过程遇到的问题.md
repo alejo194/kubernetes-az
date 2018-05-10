@@ -55,12 +55,13 @@ WARNING: No cpu cfs period support
 Insecure Registries:
  127.0.0.0/8
  ```
+ + 这里docker Cgroup Driver: systemd
+ 
  ##### 开启kubelet错
  ![kubelet报错](./images/kubelet-error.png)
  
- #### 网上查找相关只有如下
+ ##### 网上查找相关只有如下
  [原网页地址](https://github.com/gyliu513/kubernetes-handbook-1/blob/master/FAQ.md)
-
  3.Kubelet启动时Failed to start ContainerManager systemd version does not support ability to start a slice as transient unit
 CentOS系统版本7.2.1511</br>
 kubelet启动时报错systemd版本不支持start a slice as transient unit。</br>
@@ -68,5 +69,31 @@ kubelet启动时报错systemd版本不支持start a slice as transient unit。</
 与[kubeadm init waiting for the control plane to become ready on CentOS 7.2 with kubeadm 1.6.1](https://github.com/kubernetes/kubeadm/issues/228) #228类似。</br>
 
 另外有一个使用systemd管理kubelet的proposal。</br>
+> 但不知如何解决问题
+
+##### 修改 docker Cgroup Driver: cgroupfs
+```bash
+vi /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=cgroupfs"]
+}
+没有这个daemon.json文件 docker Cgroup Driver: cgroupfs
+```
+##### 重启docker
+```bash
+systemctl daemon-reload
+systemctl restart docker.service
+```
+##### 修改kubelet config 参数
+```bash
+vi /etc/kubernetes/kubelet-d
+--cgroup-driver=cgroupfs
+```
+##### 重启kubelet
+```bash
+systemctl daemon-reload
+systemctl restart kubelet.service
+```
+
 
 
