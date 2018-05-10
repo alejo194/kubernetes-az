@@ -136,9 +136,9 @@ KUBELET_ARGS="--logtostderr=true --v=0 --allow-privileged=true --address=192.168
 
 #各个机器address，hostname-override做相应修改
 ```
---address 不能设置为 127.0.0.1，否则后续 Pods 访问 kubelet 的 API 接口时会失败，因为 Pods 访问的 127.0.0.1 指向自己而不是 kubelet；
-如果设置了 --hostname-override 选项，则 kube-proxy 也需要设置该选项，否则会出现找不到 Node 的情况；
---cgroup-driver 配置成 systemd，不要使用cgroup，否则在 CentOS 系统中 kubelet 讲启动失败。
++ --address 不能设置为 127.0.0.1，否则后续 Pods 访问 kubelet 的 API 接口时会失败，因为 Pods 访问的 127.0.0.1 指向自己而不是 kubelet；
++ 如果设置了 --hostname-override 选项，则 kube-proxy 也需要设置该选项，否则会出现找不到 Node 的情况；
++ --cgroup-driver 配置成 systemd，不要使用cgroup，否则在 CentOS 系统中 kubelet 讲启动失败。（各个系统不一样，用docker info查看debian中的信息）
 
 
 ### 5.安装和配置kube-proxy
