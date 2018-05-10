@@ -19,6 +19,36 @@ scp -rp /root/kubernetes/server/bin/{kubectl,kubelet,kube-proxy} root@192.168.40
 ### 3.安装配置Docker和Flannel
 > Docker 安装参考官网 Docker version 1.12.6 
 #### Flannel安装
+```bash
+$ mkdir flannel
+$ wget https://github.com/coreos/flannel/releases/download/v0.7.1/flannel-v0.7.1-linux-amd64.tar.gz
+$ tar -xzvf flannel-v0.7.1-linux-amd64.tar.gz -C flannel
+$ sudo cp flannel/{flanneld,mk-docker-opts.sh} /usr/local/bin
+```
+#### 创建 flanneld 的 systemd unit 文件
+```bash
+vi /etc/systemd/system/flanneld.service
+
+[Unit]
+Description=Flanneld overlay address etcd agent
+After=network.target
+After=network-online.target
+Wants=network-online.target
+After=etcd.service
+Before=docker.service
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/flanneld \
+  -etcd-endpoints=http://192.168.40.171:2379,http://192.168.40.172:2379,http://192.168.40.173:2379 \
+  -etcd-prefix=/kubernetes/network
+ExecStartPost=/usr/local/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=docker.service
+```
 
 
 ### 4.安装和配置kubelet
