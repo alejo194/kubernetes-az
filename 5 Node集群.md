@@ -107,6 +107,11 @@ systemctl restart docker
 ```
 #### 查看网卡信息, 可以看到他们应该在同一网段里面
 ![docker网段信息](./images/docker-flannel-network.png)
+#### 查看ectd保存的记录
+```bash
+etcdctl --endpoints=http://192.168.40.171:2379,http://192.168.40.172:2379,http://192.168.40.173:2379 ls /kubernetes/network/subnets
+```
+
 ### 4.安装和配置kubelet
 
 ### 5.安装和配置kube-proxy
