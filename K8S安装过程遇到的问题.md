@@ -13,7 +13,7 @@ $ sudo reboot
 ```
 
 
-#### 2、skipping pod synchronization - [Failed to start ContainerManager systemd version does not support ability to start a slice as transient unit]
+#### 2、Kubelet启动时Failed  skipping pod synchronization - [Failed to start ContainerManager systemd version does not support ability to start a slice as transient unit]
 ```bash
 $ docker info
 Containers: 0
