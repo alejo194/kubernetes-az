@@ -5,7 +5,7 @@
 #### 检查kubelet和kube-proxy环境
 ![检查kubelet和kube-proxy环境](./images/node-kube.png)
 #### 检查kubectl工具类环境
-![kubectl环境](./images/kubernetes.png)
+![kubectl环境](./images/node-kubectl.png)
 
 ### 2.k8s运行环境
 
