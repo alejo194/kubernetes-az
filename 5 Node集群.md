@@ -52,6 +52,11 @@ KillMode=process
 
 [Install]
 WantedBy=multi-user.target
+
+# 重启docker
+systemctl daemon-reload
+systemctl enable docker
+systemctl restart docker
 ```
 
 #### Flannel安装
