@@ -18,47 +18,6 @@ scp -rp /root/kubernetes/server/bin/{kubectl,kubelet,kube-proxy} root@192.168.40
 
 ### 3.安装配置Docker和Flannel
 > Docker 安装参考官网 Docker version 1.12.6 
-#### 创建 docker 的启动文件修改
-```bash
-vi /lib/systemd/system/docker.service
-
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target docker.socket
-Requires=docker.socket
-
-[Service]
-Type=notify
-EnvironmentFile=-/run/flannel/docker    #此处添加
-# the default is not to use systemd for cgroups because the delegate issues still
-# exists and systemd currently does not support the cgroup feature set required
-# for containers run by docker
-ExecStart=/usr/bin/dockerd -H fd:// --log-level=error $DOCKER_NETWORK_OPTIONS #此处修改
-ExecReload=/bin/kill -s HUP $MAINPID
-# Having non-zero Limit*s causes performance problems due to accounting overhead
-# in the kernel. We recommend using cgroups to do container-local accounting.
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
-# Uncomment TasksMax if your systemd version supports it.
-# Only systemd 226 and above support this version.
-#TasksMax=infinity
-TimeoutStartSec=0
-# set delegate yes so that systemd does not reset the cgroups of docker containers
-Delegate=yes
-# kill only the docker process, not all processes in the cgroup
-KillMode=process
-
-[Install]
-WantedBy=multi-user.target
-
-# 重启docker
-systemctl daemon-reload
-systemctl enable docker
-systemctl restart docker
-```
-
 #### Flannel安装
 ```bash
 $ mkdir flannel
@@ -106,6 +65,48 @@ systemctl status flanneld -l
 #### 当服务启动后, 可以在/run/flannel文件夹下看到两个文件
 ![Flannel开启后/run/flannel下文件](./images/flannel-run.png)
 
+#### 创建 docker 的启动文件修改
+```bash
+vi /lib/systemd/system/docker.service
+
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target docker.socket
+Requires=docker.socket
+
+[Service]
+Type=notify
+EnvironmentFile=-/run/flannel/docker    #此处添加
+# the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+ExecStart=/usr/bin/dockerd -H fd:// --log-level=error $DOCKER_NETWORK_OPTIONS #此处修改
+ExecReload=/bin/kill -s HUP $MAINPID
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+TimeoutStartSec=0
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+# kill only the docker process, not all processes in the cgroup
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+# 重启docker
+systemctl daemon-reload
+systemctl enable docker
+systemctl restart docker
+```
+#### 查看网卡信息, 可以看到他们应该在同一网段里面
+![docker网段信息](./images/docker-flannel-network.png)
 ### 4.安装和配置kubelet
 
 ### 5.安装和配置kube-proxy
