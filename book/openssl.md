@@ -55,14 +55,16 @@ Self Signed证书
 
 生成Self Signed证书的过程：
 
-1.生成自签名私钥：openssl genrsa -des3 -out selfsign.key 4096（建议输入密码）
-2.生成证书签名请求：openssl req -new -key selfsign.key -out selfsign.csr 
+1.生成自签名私钥：
+> openssl genrsa -des3 -out selfsign.key 4096（建议输入密码）
+2.生成证书签名请求：
+> openssl req -new -key selfsign.key -out selfsign.csr 
 注：selfsign.csr中含有selfsign.key的公钥，保证common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请证书，就要添加你的域名。
 3.对上一步生成的证书签名请求进行签名：
-openssl x509 -req -days 365 -in selfsign.csr -signkey selfsign.key -out selfsign.crt
+> openssl x509 -req -days 365 -in selfsign.csr -signkey selfsign.key -out selfsign.crt
 
 4.一个比较简单的方法就是用下面的命令，一次生成key和证书
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
+> openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
 
 注意：确保私钥的安全性，因为该证书无法被吊销
 
@@ -78,25 +80,29 @@ TLS基于CA的身份认证的基本原理
 
 创建私有CA，然后用该CA给证书进行签名的过程：
 
-1.创建CA私钥：openssl genrsa -des3 -out ca.key 4096
+1.创建CA私钥：
+> openssl genrsa -des3 -out ca.key 4096
 
-2.生成CA的自签名证书：openssl req -new -x509 -days 365 -key ca.key -out ca.crt   
+2.生成CA的自签名证书：
+> openssl req -new -x509 -days 365 -key ca.key -out ca.crt   
 注：其实CA证书就是一个自签名证书
 
-3.生成服务端私钥 ：openssl genrsa -des3 -out server.key 4096
+3.生成服务端私钥 ：
+> openssl genrsa -des3 -out server.key 4096
 
-4.需要签名的对象（服务端）生成证书签名请求：openssl req -new -key server.key -out server.csr 
+4.需要签名的对象（服务端）生成证书签名请求：
+>openssl req -new -key server.key -out server.csr 
     注：证书签名请求当中的Common Name必须区别与CA的证书里面的Common Name
 
 5.用步骤2创建的CA证书给步骤4生成的签名请求进行签名
-openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
+>openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
 
 去掉key的密码保护
 
 ​ 每次输入密码太繁琐，可以把Key的保护密码去掉。
 
-openssl rsa -in privateKey.key -out server.key.insecure
-1
+> openssl rsa -in privateKey.key -out server.key.insecure
+
 查看证书信息
 
 ##### 查看KEY信息
