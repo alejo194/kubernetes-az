@@ -57,9 +57,11 @@ Self Signed证书
 
 1.生成自签名私钥：
 > openssl genrsa -des3 -out selfsign.key 4096（建议输入密码）
+
 2.生成证书签名请求：
 > openssl req -new -key selfsign.key -out selfsign.csr 
-注：selfsign.csr中含有selfsign.key的公钥，保证common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请证书，就要添加你的域名。
+注：selfsign.csr中含有selfsign.key的公钥，保证common Name(CN)是最重要的，它代表你的证书要代表的目标，如果你为网站申请证书，就要添加你的域名。</br>
+
 3.对上一步生成的证书签名请求进行签名：
 > openssl x509 -req -days 365 -in selfsign.csr -signkey selfsign.key -out selfsign.crt
 
