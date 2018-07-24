@@ -99,18 +99,18 @@ openssl rsa -in privateKey.key -out server.key.insecure
 1
 查看证书信息
 
-# 查看KEY信息
+##### 查看KEY信息
 > openssl rsa -noout -text -in selfsign.key
 
-# 查看CSR信息
+##### 查看CSR信息
 > openssl req -noout -text -in selfsign.csr
 
-# 查看证书信息
+##### 查看证书信息
 > openssl x509 -noout -text -in selfsign.crt
 
-# 验证证书
-# 会提示self signed
+##### 验证证书
+##### 会提示self signed
 > openssl verify selfsign.crt
 
-# 因为root.crt 是由test.crt发布的，所以会验证成功
+##### 因为root.crt 是由test.crt发布的，所以会验证成功
 > openssl verify -CAfile test.crt root.crt
