@@ -184,7 +184,7 @@ $ calicoctl get ipPool -o yaml
 >   -e ETCD_ENDPOINTS=http://192.168.1.102:2379 \\  
 > \#网络地址范围（同上面ControllerManager）  
 >   -e CALICO_IPV4POOL_CIDR=172.20.0.0/16 \\  
-> \#这个IP必须甜本机ip,如果不同会报错（bird: BGP: Unexpected connect from unknown address 192.168.101.74 (port 46159)）\\
+> \#这个IP必须甜本机ip,如果不同会报错（bird: BGP: Unexpected connect from unknown address 192.168.101.74 (port 46159)）<br/>
 >   -e IP=hostip \\ 
 > \#镜像名，为了加快大家的下载速度，镜像都放到了阿里云上  
 >   registry.cn-hangzhou.aliyuncs.com/imooc/calico-node:v2.6.2  
