@@ -126,6 +126,17 @@ $ cp target/all-node/kube-calico.service /lib/systemd/system/
 $ systemctl enable kube-calico.service
 $ service kube-calico start
 $ journalctl -f -u kube-calico
+
+#配置calicoCNI插件
+#kubelet需要调用calico和calico-ipam插件
+$ wget -N -P /usr/bin https://github.com/projectcalico/calico-cni/releases/download/v1.4.2/calico
+$ wget -N -P /usr/bin https://github.com/projectcalico/calico-cni/releases/download/v1.4.2/calico-ipam
+$ chmod +x /usr/bin/calico /usr/bin/calico-ipam
+
+#安装标准CNI lo插件
+$ wget https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz
+$ tar -zxvf cni-v0.3.0.tgz
+$ sudo cp loopback /usr/bin/
 ```
 #### 5.3 calico可用性验证
 **查看容器运行情况**
