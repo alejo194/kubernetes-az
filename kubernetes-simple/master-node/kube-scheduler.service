@@ -4,7 +4,7 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
 ExecStart=/usr/bin/kube-scheduler \
-  --address=192.168.101.74 \
+  --address=127.0.0.1 \
   --master=http://192.168.101.74:8080 \
   --leader-elect=true \
   --v=2
