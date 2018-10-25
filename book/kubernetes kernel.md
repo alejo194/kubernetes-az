@@ -9,3 +9,5 @@
 > 3.还有一个重要的场景交互式kube-scheduler与API Server的交互。</br>
 > 当Scheduler通过API Server的Watch接口监听到新建Pod副本的信息后，他会检索所有符合该Pod要求的Node列表，开始执行Pod调度逻辑，调度成功后将Pod绑定到
 > 目标节点上。
+
++ ***Controller Manager***
