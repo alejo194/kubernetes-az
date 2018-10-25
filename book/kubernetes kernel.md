@@ -3,7 +3,7 @@
 > 这类接口的作用是代理REST请求,即Kubernetes API Server把收到的REST请求转发到某个Node上的kubelet守护进程的REST端口上，由该Kebulet进程负责响应。</br>
 > 1.常见的交互场景一是kubectl进程与API Server的交互；<br/>
 > 每个Node节点上的kubelet每隔一个时间周期，就会调用一次API Server的REST接口报告自身状态，API Server接收到这些信息后，将节点的状态信息更新到etcd中。</br>
-> kubectl也通过API Server的Watch接口监听Pod信息。</br>
+> kubectl也通过API Server的Watch接口监听Pod信息,对其进行增、删、改。</br>
 > 2.常见的交互场景二是kube-controller-manager进程与API Server的交互。</br>
 > kube-controller-manager中的Node Controller模块通过API Server提供的Watch接口，实时监控Node的信息，并做相应处理。</br>
 > 3.还有一个重要的场景交互式kube-scheduler与API Server的交互。</br>
