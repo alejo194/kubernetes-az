@@ -13,3 +13,7 @@
 + ***Controller Manager***
 
 + ***Scheduler***
+
++ ***kubelet***
+
++ ***kube-proxy***
