@@ -115,7 +115,8 @@ NAME             STATUS    AGE       VERSION
 ##### ServiceAccount
 ```bash
 1. ServiceAccount与Secret
-先讲讲kubernetes的serviceaccount，我们的服务有时候需要一些带有隐私信息的东西，token，certification file等等，这些东西我们可以在master上创建，然后在创建pod的时候导入进去。具体可以去看github上的secret.md，那里有具体的例子。
+先讲讲kubernetes的serviceaccount，我们的服务有时候需要一些带有隐私信息的东西，token，certification file等等，这些东西
+我们可以在master上创建，然后在创建pod的时候导入进去。具体可以去看github上的secret.md，那里有具体的例子。
 
 我们执行：
 
@@ -128,7 +129,8 @@ default   1
 
 NAME      SECRETS
 default   0
-这就麻烦了，用脚本启动k8s，启动的时候是会自动创建一个serviceaccount的，而serviceaccount创建出来的时候又会自动创建一个secret作为这个serviceaccount的token。
+这就麻烦了，用脚本启动k8s，启动的时候是会自动创建一个serviceaccount的，而serviceaccount创建出来的时候又会自动创建一个secret
+作为这个serviceaccount的token。
 
 我们在apiserver的启动参数中添加：
 
@@ -145,6 +147,7 @@ kubectl get serviceaccount
 
 NAME      SECRETS
 default   1
-注意，这里可能会启动apiserver失败，或者启动后没有效果，因为没有secrets的serviceaccount会保存在etcd中，所以我们在正常启动前最好删掉etcd中的旧数据（$etcdctl rm --recursive registry）。
+注意，这里可能会启动apiserver失败，或者启动后没有效果，因为没有secrets的serviceaccount会保存在etcd中，所以我们在正常启动前
+最好删掉etcd中的旧数据（$etcdctl rm --recursive registry）。
 ```
 
