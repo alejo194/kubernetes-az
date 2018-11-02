@@ -129,6 +129,12 @@ systemctl enable kube-scheduler
 systemctl start kube-scheduler
 systemctl status kube-scheduler -l
 ```
++ 注：不同于API Server，Master中另外两个核心组件kube-controller-manager和kube-scheduler会修改集群的状态信息，
+因此对于kube-controller-manager和kube-scheduler而言，高可用不仅意味着需要启动都给实例，还需要这对多个实例实现选举并选举出leader,
+以保证同一时间只有一个实例可以对集群状态信息进行读写，避免出现同步问题和一致性问题。k8s对于这种选举机制的实现采用租赁锁（lease-lock）实现，
+我们可以通过在kube-controller-manager和kube-scheduler的每个实例的启动参数中设置--leader-elect=true,保证同一时间只会运行一个可修改集群|
+信息的实例
+
 ### 5.验证master节点功能
 4个配置文件 <br/>
 ![master配置文件存放地方](./images/master-config.png)
