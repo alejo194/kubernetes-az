@@ -6,7 +6,7 @@
 
 + **2.Volume类型**<br/>
 ***1.emptyDir***<br/>
-一个emptyDir Volume是在Pod分配到Node时创建的。
+一个emptyDir Volume是在Pod分配到Node时创建的。<br/>
 ***2.hostPath***<br/>
 ***3.gcePersistentDisk***<br/>
 ***4.awsElasticBlockStore***<br/>
