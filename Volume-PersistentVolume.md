@@ -12,3 +12,6 @@
 ***4.awsElasticBlockStore***
 ***5.NFS***
 ***6.其他类型的Volume***
+
+
+#### Persistent Volume
