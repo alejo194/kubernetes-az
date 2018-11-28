@@ -1,6 +1,6 @@
 + ConfigMap将应用所需的配置信息与程序进行分离，这样就可以是应用程序被更好地复用，通过不同的配置能实现更灵活的功能。
 + 使用kubectl describe or kubectl get检索ConfigMap信息
-参考：https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
++ 参考：https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 #### 1. ConfigMap: 容器应用配置管理
 ConfigMap供容器使用的典型用法如下。<br/>
 (1) 生成为容器内的环境变量。<br/>
@@ -77,13 +77,18 @@ $ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/config
 or
 $ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/configmap/game.properties --from-file=/var/maxwin/k8s-file/configmap/ui.properties
 ```
-*** 使用--from-env-file选项 ***
+***使用--from-env-file选项***
 ```bash
 $ wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game-env-file.properties
 $ kubectl create configmap game-config-env-file \
         --from-env-file=/var/maxwin/k8s-file/configmap/game-env-file.properties
 ```
-*** Define the key to use when creating a ConfigMap from a file ***
+***Define the key to use when creating a ConfigMap from a file***
 ```bash
 kubectl create configmap game-config-3 --from-file=<my-key-name>=<path-to-file>
+```
+***Create ConfigMaps from literal values***
+```bash
+使用--from-literal选项
+kubectl create configmap special-config --from-literal=special.how=very --from-literal=special.type=charm
 ```
