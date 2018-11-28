@@ -1,5 +1,6 @@
 + ConfigMap将应用所需的配置信息与程序进行分离，这样就可以是应用程序被更好地复用，通过不同的配置能实现更灵活的功能。
 + 使用kubectl describe or kubectl get检索ConfigMap信息
+参考：https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 #### 1. ConfigMap: 容器应用配置管理
 ConfigMap供容器使用的典型用法如下。<br/>
 (1) 生成为容器内的环境变量。<br/>
@@ -15,10 +16,10 @@ ConfigMap以一个或多个key:value的形式保存在Kubernetes系统中供应�
 #### 3.ConfigMap的创建：kubectl命令行方式
 + Create ConfigMaps from directories
 ```bash
-mkdir -p /var/maxwin/configmap
-wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game.properties -O /var/maxwin/configmap/game.properties
-wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/ui.properties -O /var/maxwin/configmap/ui.properties
-kubectl create configmap game-config --from-file=/var/maxwin/configmap
+mkdir -p /var/maxwin/k8s-file/configmap
+wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game.properties -O /var/maxwin/k8s-file/configmap/game.properties
+wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/ui.properties -O /var/maxwin/k8s-file/configmap/ui.properties
+kubectl create configmap game-config --from-file=/var/maxwin/k8s-file/configmap
 
 root@de9-74:/var/maxwin/k8s-file/configmap# kubectl describe configmaps game-config
 Name:         game-config
@@ -69,4 +70,20 @@ metadata:
   resourceVersion: "3384508"
   selfLink: /api/v1/namespaces/default/configmaps/game-config
   uid: 5b22aed1-f2e3-11e8-8da2-000c2906738c
+```
++ Create ConfigMaps from files
+```bash
+$ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/configmap/game.properties
+or
+$ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/configmap/game.properties --from-file=/var/maxwin/k8s-file/configmap/ui.properties
+```
+*** 使用--from-env-file选项 ***
+```bash
+$ wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game-env-file.properties
+$ kubectl create configmap game-config-env-file \
+        --from-env-file=/var/maxwin/k8s-file/configmap/game-env-file.properties
+```
+*** Define the key to use when creating a ConfigMap from a file ***
+```bash
+kubectl create configmap game-config-3 --from-file=<my-key-name>=<path-to-file>
 ```
