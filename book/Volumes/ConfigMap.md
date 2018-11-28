@@ -14,7 +14,7 @@ ConfigMap以一个或多个key:value的形式保存在Kubernetes系统中供应�
 
 
 #### 3.ConfigMap的创建：kubectl命令行方式
-+ Create ConfigMaps from directories
+***Create ConfigMaps from directories***
 ```bash
 mkdir -p /var/maxwin/k8s-file/configmap
 wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game.properties -O /var/maxwin/k8s-file/configmap/game.properties
@@ -71,14 +71,13 @@ metadata:
   selfLink: /api/v1/namespaces/default/configmaps/game-config
   uid: 5b22aed1-f2e3-11e8-8da2-000c2906738c
 ```
-+ Create ConfigMaps from files
+***Create ConfigMaps from files***
 ```bash
 $ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/configmap/game.properties
 or
 $ kubectl create configmap game-config-2 --from-file=/var/maxwin/k8s-file/configmap/game.properties --from-file=/var/maxwin/k8s-file/configmap/ui.properties
-```
-***使用--from-env-file选项***
-```bash
+
+使用--from-env-file选项
 $ wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game-env-file.properties
 $ kubectl create configmap game-config-env-file \
         --from-env-file=/var/maxwin/k8s-file/configmap/game-env-file.properties
