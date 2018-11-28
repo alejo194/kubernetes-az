@@ -1,5 +1,5 @@
-> ConfigMap将应用所需的配置信息与程序进行分离，这样就可以是应用程序被更好地复用，通过不同的配置能实现更灵活的功能。
-> 使用kubectl describe or kubectl get检索ConfigMap信息
++ ConfigMap将应用所需的配置信息与程序进行分离，这样就可以是应用程序被更好地复用，通过不同的配置能实现更灵活的功能。
++ 使用kubectl describe or kubectl get检索ConfigMap信息
 #### 1. ConfigMap: 容器应用配置管理
 ConfigMap供容器使用的典型用法如下。<br/>
 (1) 生成为容器内的环境变量。<br/>
@@ -20,6 +20,31 @@ wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/game.pr
 wget https://k8s.io/docs/tasks/configure-pod-container/configmap/kubectl/ui.properties -O /var/maxwin/configmap/ui.properties
 kubectl create configmap game-config --from-file=/var/maxwin/configmap
 
+root@de9-74:/var/maxwin/k8s-file/configmap# kubectl describe configmaps game-config
+Name:         game-config
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+game.properties:
+----
+enemies=aliens
+lives=3
+enemies.cheat=true
+enemies.cheat.level=noGoodRotten
+secret.code.passphrase=UUDDLRLRBABAS
+secret.code.allowed=true
+secret.code.lives=30
+ui.properties:
+----
+color.good=purple
+color.bad=yellow
+allow.textmode=true
+how.nice.to.look=fairlyNice
+
+Events:  <none>
 root@de9-74:/var/maxwin/k8s-file/configmap# kubectl get configmaps game-config -o yaml
 apiVersion: v1
 data:
