@@ -1,3 +1,4 @@
+```bash
 apiVersion: v1
 kind: Pod
 metadata:
@@ -74,3 +75,4 @@ spec:
         items:
           - key: string
             path: string
+```
