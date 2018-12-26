@@ -101,4 +101,10 @@ spec.containers[].volumeMounts[]    List   挂载到容器内部的存储卷配�
 spec.containers[].volumeMounts[].name   String   引用Pod定义的共享存储卷的名称，需使用volumes[]部分定义的共享存储卷名称
 spec.containers[].volumeMounts[].mountPath   String   存储卷在容器内Mount的绝对路径，应少于512个字符
 spec.containers[].volumeMounts[].readOnly    Boolean   是否为只读模式，默认为读写模式
+spec.containers[].ports[]      List     容器需要暴露的端口号列表
+spec.containers[].ports[].name    String   端口的名称
+spec.containers[].ports[].containerPort   Int   容器需要监听的端口号
+spec.containers[].ports[].hostPort     Int    容器所在主机需要监听的端口号，默认与containerPort相同。设置hostPort时，同一台宿主机将
+                                              无法启动该容器的第2份副本
+spec.containers[].ports[].protocol    String   
 ```
