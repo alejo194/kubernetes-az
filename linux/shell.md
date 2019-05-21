@@ -62,7 +62,13 @@ grep:
                       ...
                       
                 后向引用： 引用前面的分组括号的模式所匹配到的字符；
-               
+                [:digit:] 所有数字，相当于0-9
+                [:lower:] 所有的小写字母
+                [:upper:] 所有的大写字母
+                [:alpha:] 所有的字母
+                [:alnum:] 相当于0-9a-zA-Z
+                [:space:] 空白字符
+                [:punct:] 所有标点符号
 egrep:
     用来支持扩展正则表达式，实现类似于grep文本过滤，grep -E
     
@@ -123,3 +129,12 @@ fgrep:不支持正则表达式元字符：
          patch [OPTIONS] -i /path/to/patch_file /path/to/oldfile
          
          patch /path/to/oldfile < /path/to/patch_file
+
+sed: 自动编辑一个或多个文件、简化对文件的反复操作、编写转换程序等
+    sed [OPTION]... {script-only-if-no-other-script} [input-file]...
+        -e: 直接在命令模式上进行sed动作编辑，此为默认选项
+        -i: 直接修改文件内容
+        -n: 只打印模式匹配的行
+        -r：支持扩展表达式
+        -f: 将sed的动作写在一个文件内，用--f filename执行filename内的sed动作
+    
