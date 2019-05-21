@@ -1,3 +1,4 @@
+```bash
 bash特殊特性之：bash命令，key=value
 bash特殊特性之：变量
 
@@ -138,3 +139,4 @@ sed: 自动编辑一个或多个文件、简化对文件的反复操作、编写
         -r：支持扩展表达式
         -f: 将sed的动作写在一个文件内，用--f filename执行filename内的sed动作
     
+```
