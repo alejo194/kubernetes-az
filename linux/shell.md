@@ -130,6 +130,8 @@ fgrep:不支持正则表达式元字符：
          patch [OPTIONS] -i /path/to/patch_file /path/to/oldfile
          
          patch /path/to/oldfile < /path/to/patch_file
+         
+rgrep命令用于递归查找文件里符合条件的字符串。类似grep -r
 
 sed: 自动编辑一个或多个文件、简化对文件的反复操作、编写转换程序等
     sed [OPTION]... {script-only-if-no-other-script} [input-file]...
