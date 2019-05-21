@@ -86,4 +86,37 @@ egrep:
        或:
           a|b:
     
-    
+fgrep:不支持正则表达式元字符：
+    当无需要用到元字符去编写模式时，使用fgrep必能更好；
+  
+文本查看及处理工具：wc,cut, sort, uniq, diff, patch
+    wc: word count
+        wc [OPTION] ... [FILE] ...
+           -l: lines
+           -w: words
+           -c: bytes
+     cut:
+          cut OPTION ... [FILE] ...
+              OPTION:
+                  -d CHAR: 以指定的字符为分隔符：
+                  -f FIELDS: 挑选出的字段；
+                        #： 指定的单个字符
+                        #-#: 连续的多个字符
+                        #,#: 离散的多个字符
+                        
+     sort:
+         -n:基于数值大小而非字符进行排序
+         -t CHAR：指定分隔符
+         -k #：用于排序比较的字符
+         -r: 降序排序；
+         -f: 忽略字符大小写
+         -u: 重复的行只保留一份（连续且相同）
+         
+     uniq:报告或移出相同的行
+         -c:显示每行重复的次数
+         -u:仅显示不重复的行
+         -d:显示重复的行
+     diff: 逐行比较文件的内容
+         diff /path/to/oldfile /path/to/newfile > /path/to/patch.file
+         
+     patch：向文件打补丁
