@@ -117,6 +117,9 @@ fgrep:不支持正则表达式元字符：
          -u:仅显示不重复的行
          -d:显示重复的行
      diff: 逐行比较文件的内容
-         diff /path/to/oldfile /path/to/newfile > /path/to/patch.file
-         
+         diff /path/to/oldfile /path/to/newfile > /path/to/patch_file
+         -u: 使用unfied机制，即显示要修改的行的上下文，默认为3行
      patch：向文件打补丁
+         patch [OPTIONS] -i /path/to/patch_file /path/to/oldfile
+         
+         patch /path/to/oldfile < /path/to/patch_file
