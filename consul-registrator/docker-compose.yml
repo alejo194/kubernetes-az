@@ -1,0 +1,42 @@
+version: '2'
+services:
+  consul-c:
+    image: consul
+    container_name: consul-c
+    network_mode: host
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      - "SERVICE_IGNORE=true"
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8302:8302
+      - 8302:8302/udp
+      - 8400:8400
+      - 8500:8500
+      - 53:53/udp
+    volumes:
+      - ./consul/config:/consul/config
+      - ./consul/data:/consul/data
+    command: "agent -node=c-int31 -bind=10.40.201.31  -retry-join=10.40.201.4  -client=0.0.0.0 -datacenter=mw"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    #command: "-ip=10.40.201.31 -useIpFromLabel=kongip -internal consul://localhost:8500"
+    command: "-ip=10.40.201.31 consul://localhost:8500"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
