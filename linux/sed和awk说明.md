@@ -6,4 +6,6 @@
 #### awk
      awk 常用选项： -F 分割参数
          常用变量：$n 表示当前记录第n个字段, $0 表示执行过程中当前行的文本内容, $NR 表示当前号, $NF 表示列数
-https://www.cnblogs.com/quincyhu/p/5884390.html
+https://www.cnblogs.com/quincyhu/p/5884390.html</br>
+awk练习：</br>
+https://www.cnblogs.com/snsdzjlz320/p/5691280.html</br>
