@@ -52,6 +52,10 @@
         - 数值/字符串比较
         - 逻辑比较
         - 运算符
+      
+      例：过滤唯一的行
+      >  cut -d: -f7 /etc/passwd > loginshell.txt       
+      >  awk '!a[$0]++' loginshell.txt
 https://www.cnblogs.com/quincyhu/p/5884390.html</br>
 awk练习：</br>
 https://www.cnblogs.com/snsdzjlz320/p/5691280.html</br>
