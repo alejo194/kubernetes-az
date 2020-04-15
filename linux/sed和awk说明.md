@@ -56,6 +56,8 @@
       例：过滤唯一的行
       >  cut -d: -f7 /etc/passwd > loginshell.txt       
       >  awk '!a[$0]++' loginshell.txt
+      或
+      >  awk -F: '!a[$7]++ {print $7}' /etc/passwd
 https://www.cnblogs.com/quincyhu/p/5884390.html</br>
 awk练习：</br>
 https://www.cnblogs.com/snsdzjlz320/p/5691280.html</br>
