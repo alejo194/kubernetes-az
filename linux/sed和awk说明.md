@@ -19,6 +19,15 @@
      行后处理，END{}
         - 处理完最后一行文本之后执行
         - 一般用来输出处理结果
+        
+     条件如何表示？
+     格式回顾
+        - awk [选项] '[条件]{编辑指令}' 文件.. ..
+     条件的表现形式
+        - 正则表达式
+        - 数值/字符串比较
+        - 逻辑比较
+        - 运算符
 https://www.cnblogs.com/quincyhu/p/5884390.html</br>
 awk练习：</br>
 https://www.cnblogs.com/snsdzjlz320/p/5691280.html</br>
