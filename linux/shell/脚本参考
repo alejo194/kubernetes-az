@@ -1,3 +1,4 @@
+1.apache添加虚拟机
 cat vhostadd.sh
 #!/bin/bash
 [ $# -le 0] && echo "用法：$0 <虚拟主机域名>" && exit 1
