@@ -43,6 +43,7 @@ Password: $UP_PASS
 Download User: $DOWN_USER
 Password: $DOWN_PASS" > /root/$1_ftpac.txt
 "
+
 ##双色球
 cat fcshake.sh
 #!/bin/bash
@@ -60,3 +61,24 @@ done
 echo 
 echo -n "篮球："；sleep 3
 echo "  $[$RANDOM%16+1]"
+
+##猜价格
+cat pricegame.sh
+#!/bin/bash
+PRICE=$[$RANDOM%2000+1]
+TIME=0
+echo "商品实际价格为1-2000之间，猜猜看是多少？"
+while true
+do 
+    read -p "请输入你猜测的价格数目：" X
+    let TIMES++
+    if [ $X -eq $PRICE] ; then
+        echo "恭喜你答对了，实际价格是 $PRICE"
+        echo "你总共猜测了 $TIMES 次"
+        exit 0
+    elif [ $X -gt $PRICE] ; then
+        echo "太高了！"
+    else
+        echo "太低了！"
+    fi
+done
