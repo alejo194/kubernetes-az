@@ -1,0 +1,233 @@
+version: '3'
+services:
+  consul-s:
+    image: consul
+    container_name: consul-s
+    network_mode: host
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      - SERVICE_IGNORE=true
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8302:8302
+      - 8302:8302/udp
+      - 8400:8400
+      - 8500:8500
+      - 53:53/udp
+    volumes:
+      - ./consul/config:/consul/config
+      - ./consul/data:/consul/data
+    command: "agent -server -bootstrap-expect 3 -node=s-int124 -bind=*.*.*.124 -retry-join *.*.*.122  -client=0.0.0.0 -datacenter=poc"
+    restart: always
+    #logging:
+    #  driver: "json-file"
+    #  options:
+    #    max-size: "50m"
+    #    max-file: "10"
+    logging:
+      driver: "none"
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    #command: "-ip=*.*.*.124 -useIpFromLabel=kongip -internal consul://localhost:8500"
+    command: "-ip=*.*.*.124 consul://localhost:8500"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  zoo:
+        image: zookeeper
+        #image: daf7547036e2
+        container_name: zoo
+        hostname: zoo
+        restart: always
+        ports:
+            - 2181:2181
+            - 2888:2888
+            - 3888:3888
+        extra_hosts:
+            - "TMP-POC-AP01:*.*.*.122"
+            #- "TMP-POC-AP02:*.*.*.124"
+            - "TMP-POC-AP03:*.*.*.146"
+        environment:
+            SERVICE_2888_IGNORE: 'true'
+            SERVICE_3888_IGNORE: 'true'
+            KAFKA_HEAP_OPTS: -Xmx512M -Xms512M
+            ZOO_MY_ID: 2
+            #ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=TMP-POC-AP02:2888:3888 server.3=TMP-POC-AP03:2888:3888
+            ZOO_SERVERS: server.1=TMP-POC-AP01:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=TMP-POC-AP03:2888:3888;2181
+        logging:
+          driver: "json-file"
+          options:
+             max-size: "50m"
+             max-file: "10"
+  kafka2:
+        image: openjdk:8-jdk-slim
+        container_name: kafka2
+        hostname: kafka2
+        restart: always
+        ports:
+          - 9092:9092
+        extra_hosts:
+            - "TMP-POC-AP01:*.*.*.122"
+            - "TMP-POC-AP02:*.*.*.124"
+            - "TMP-POC-AP03:*.*.*.146"
+        environment:
+            - SERVICE_NAME=kafka
+            - SERVICE_TAGS=kafka
+        volumes:
+            - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+            - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+            - /var/maxwin/kafka/kafka-2.5.0:/var/maxwin/kafka
+            - /data/kafka-data:/data/kafka-data
+        working_dir: /var/maxwin/kafka
+        command: ["bin/kafka-server-start.sh", "config/server.properties"]
+        logging:
+          driver: "json-file"
+          options:
+             max-size: "50m"
+             max-file: "10"
+  kong-database:
+   image: cassandra:3
+   container_name: cassandra
+   volumes:
+     - cassandra:/var/lib/cassandra
+   ports:
+     - 9042:9042
+   environment:
+      - SERVICE_IGNORE=true
+   restart: always
+   networks:
+     - maxwin_default
+   logging:
+     driver: "json-file"
+     options:
+       max-size: "50m"
+       max-file: "10"
+
+  kong:
+    image: kong:0.14
+    container_name: kong
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+    links:
+      - kong-database:kong-database
+    environment:
+      - "KONG_DATABASE=cassandra"
+      - "KONG_CASSANDRA_CONTACT_POINTS=kong-database"
+      - "KONG_PG_HOST=kong-database"
+      - "KONG_PROXY_ACCESS_LOG=/dev/stdout"
+      - "KONG_ADMIN_ACCESS_LOG=/dev/stdout"
+      - "KONG_PROXY_ERROR_LOG=/dev/stderr"
+      - "KONG_ADMIN_ERROR_LOG=/dev/stderr"
+      - "KONG_ADMIN_LISTEN=0.0.0.0:8001"
+      - "KONG_ADMIN_LISTEN_SSL=0.0.0.0:8444"
+      #- "KONG_NGINX_PROXY_PROXY_BUFFERS=2 256k"
+      #- "KONG_NGINX_PROXY_PROXY_BUFFERS_SIZE=128k"
+      #- "KONG_NGINX_PROXY_PROXY_TEMP_FILE_WRITE_SIZE=512k"
+      #- "KONG_NGINX_PROXY_PROXY_BUSY_BUFFERS_SIZE=256k"
+      - "KONG_DB_UPDATE_PROPAGATION=2"
+      - SERVICE_8443_IGNORE=true
+      - SERVICE_8444_IGNORE=true
+      - SERVICE_8000_NAME=kong
+      - SERVICE_8001_NAME=kong
+      - SERVICE_8000_TAGS=kong
+      - SERVICE_8001_TAGS=admin
+    restart: always
+    #command: ["kong", "migrations", "up"]
+    networks:
+      - maxwin_default
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+
+  kong-dashboard:
+    image: pgbi/kong-dashboard:v3.5.0
+    container_name: kong-dashboard
+    ports:
+      - 8088:8080
+    networks:
+      - maxwin_default
+    restart: always
+    environment:
+      - SERVICE_IGNORE=true
+    command: ["start", "--kong-url http://kong:8001", "--basic-auth adminpoc=3edc4rfv"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  auth:
+    image: cxhjet/auth_kong
+    container_name: auth_kong_python3.6
+    restart: always
+    network_mode: bridge
+    environment:
+      CONSUL_HTTP_ADDR: *.*.*.124:8500
+      WEB_PORT: 30000
+      DATABASE_NAME: maxbus
+      KONG_AUTO_REGISTER: 'true'
+      CONSUL_AUTO_REGISTER: 'true'
+      LOG_LEVEL: 20
+      SERVICE_IGNORE: 'true'
+    ports:
+      - 30000:80
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - ./conf/auth_kong/supervisord.conf:/etc/supervisor.d/supervisord.conf
+      - ./conf/auth_kong/default.conf:/etc/nginx/conf.d/default.conf
+      - ./conf/auth_kong/uwsgi.ini:/var/auth_kong/uwsgi.ini
+      - ./conf/auth_kong/css:/usr/local/lib/python3.6/site-packages/app/static/css
+    working_dir: /var/auth_kong
+    # command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  rightmanage:
+    image: cxhjet/rightmanage_kong
+    container_name: rightmanage_python3.6
+    restart: always
+    network_mode: bridge
+    environment:
+      CONSUL_HTTP_ADDR: *.*.*.124:8500
+      WEB_PORT : 30001
+      DATABASE_NAME: maxbus
+      KONG_AUTO_REGISTER: 'true'
+      CONSUL_AUTO_REGISTER: 'true'
+      LOG_LEVEL: 20
+      SERVICE_IGNORE: 'true'
+    ports:
+      - 30001:80
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - ./conf/rightmanage_kong/supervisord.conf:/etc/supervisor.d/supervisord.conf
+      - ./conf/rightmanage_kong/default.conf:/etc/nginx/conf.d/default.conf
+      - ./conf/rightmanage_kong/uwsgi.ini:/var/rightmanage/uwsgi.ini
+    working_dir: /var/rightmanage
+    # command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+networks:
+  maxwin_default:
+    external: true
+volumes:
+  cassandra:

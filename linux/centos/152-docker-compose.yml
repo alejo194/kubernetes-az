@@ -1,0 +1,182 @@
+version: '3'
+services:
+  redis:
+    image: redis:3.2
+    container_name: redis
+    hostname: redis_ap_master
+    restart: always
+    network_mode: bridge
+    ports:
+      - 6380:6380
+    environment:
+      - SERVICE_6380_NAME=redis
+      - SERVICE_TAGS=master,geo_master,session
+    volumes:
+      - ./conf/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./conf/redis/data:/data
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+    restart: always
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+  redisadmin:
+    image: erikdubbelboer/phpredisadmin
+    container_name: redisadmin
+    ports:
+      - 81:80
+    environment:
+      - REDIS_1_NAME=*.*.*.152_master_6380
+      - REDIS_1_HOST=*.*.*.152
+      - REDIS_1_PORT=6380
+      - REDIS_2_NAME=*.*.*.146_slave_6380
+      - REDIS_2_HOST=*.*.*.146
+      - REDIS_2_PORT=6380
+      - SERVICE_IGNORE='true'
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+  consul-c:
+    image: consul
+    container_name: consul-c
+    network_mode: host
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      #SERVICE_IGNORE: 'true'
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8302:8302
+      - 8302:8302/udp
+      - 8400:8400
+      - 8500:8500
+      - 53:53/udp
+    volumes:
+      - ./consul/config:/consul/config
+      - ./consul/data:/consul/data
+    command: "agent -node=c-int152 -bind=*.*.*.152  -retry-join=*.*.*.122  -client=0.0.0.0 -datacenter=poc"
+    restart: always
+    #logging:
+    #  driver: "json-file"
+    #  options:
+    #    max-size: "50m"
+    #    max-file: "10"
+    logging:
+      driver: "none"
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    #command: "-ip=*.*.*.152 -useIpFromLabel=kongip -internal consul://localhost:8500"
+    command: "-ip=*.*.*.152 consul://localhost:8500"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  sync_db2redis:
+    image: cxhjet/sync_db2redis
+    container_name: sync_db2redis
+    restart: always
+    environment:
+      CONSUL_HTTP_ADDR: *.*.*.152:8500
+      REDIS_EXPIRETIME: 30
+      SYNC_INTERVAL: 60
+      EST_TYPE: 3
+      LOG_LEVEL: 20
+      EST_HOST: *.*.*.122
+      EST_PORT: 11212
+      DATABASE_NAME: maxbus
+      REDIS_GEO: geo_master
+      REDIS: master
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+    working_dir: /var/sync_db2redis
+    command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  maxguide:
+    image: nginx
+    container_name: maxguide
+    ports:
+      - 80:80
+    environment:
+      SERVICE_IGNORE: 'true'
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - ./maxguide/dist/:/maxguideapp
+      - ./default-maxguide.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    working_dir: /app
+    restart: always
+    logging:
+       driver: "json-file"
+       options:
+         max-size: "50m"
+         max-file: "10"
+  datamng_ui:
+    image: nginx
+    container_name: datamng_ui
+    ports:
+      - 30006:30006
+    volumes:
+      - /var/www/fleetmng/static/:/data/fleetmng-images/
+      - ./datamng_ui/dist/:/app
+      - ./default-datamng_ui.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /app
+    restart: always
+    logging:
+       driver: "json-file"
+       options:
+         max-size: "50m"
+         max-file: "10"
+  realtime-srv_aiohttp:
+    image: cxhjet/realtime_srv_py
+    container_name: realtime-srv-aiohttp
+    restart: always
+    environment:
+      CONSUL_HTTP_ADDR: *.*.*.152:8500
+      WEB_PORT : 30002
+      KONG_AUTO_REGISTER: 'true'
+      SERVICE_NAME: realtime-server
+      #  服務的tag
+      SERVICE_TAGS: smartbus,python
+      # 服務的健康檢查，不需要加 ip:port
+      SERVICE_CHECK_HTTP: /realtime-srv/v1.0/health
+      # 20 秒，需要帶單位 s
+      SERVICE_CHECK_INTERVAL: 20s
+      # 5 秒，需要帶單位 s
+      SERVICE_CHECK_TIMEOUT: 5s
+      # 動態數據的緩存時間，為0時不做緩存，單位秒，不要帶s。
+      CACHE_TIME: 5
+      # 預估時間呈現方式，true為首站式，false為多段式
+      SCH_APPLY_FRIST_STOP: 'true'
+      # log的級別，10：debug，20：info，30：warn，40：error，50：critical，log會影響程序性能
+      LOG_LEVEL: 20
+    ports:
+      - 30002:30002
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+    working_dir: /var/realtime_srv_py
+    command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"

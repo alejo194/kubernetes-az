@@ -1,0 +1,152 @@
+version: '3'
+services:
+  redis:
+    image: redis:3.2
+    container_name: redis
+    hostname: redis_ap_master
+    restart: always
+    ports:
+      - 6380:6380
+    network_mode: bridge
+    environment:
+      - SERVICE_6380_NAME=redis
+      - SERVICE_TAGS=slave,geo_slave,cache,device_slave
+    volumes:
+      - ./conf/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./conf/redis/data:/data
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+    restart: always
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+  consul-s:
+    image: consul
+    container_name: consul-s
+    network_mode: host
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
+      - SERVICE_IGNORE=true
+    ports:
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8302:8302
+      - 8302:8302/udp
+      - 8400:8400
+      - 8500:8500
+      - 53:53/udp
+    volumes:
+      - ./consul/config:/consul/config
+      - ./consul/data:/consul/data
+    command: "agent -server -bootstrap-expect 3 -node=s-int146 -bind=*.*.*.146 -retry-join *.*.*.122  -client=0.0.0.0 -datacenter=poc"
+    restart: always
+    #logging:
+    #  driver: "json-file"
+    #  options:
+    #    max-size: "50m"
+    #    max-file: "10"
+    logging:
+      driver: "none"
+  registrator:
+    image: gliderlabs/registrator:master
+    container_name: registrator
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    #command: "-ip=*.*.*.146 -useIpFromLabel=kongip -internal consul://localhost:8500"
+    command: "-ip=*.*.*.146 consul://localhost:8500"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  zoo:
+        image: zookeeper
+        #image: daf7547036e2
+        container_name: zoo
+        hostname: zoo
+        restart: always
+        ports:
+            - 2181:2181
+            - 2888:2888
+            - 3888:3888
+        extra_hosts:
+            - "TMP-POC-AP01:*.*.*.122"
+            - "TMP-POC-AP02:*.*.*.124"
+            #- "TMP-POC-AP03:*.*.*.146"
+        environment:
+            SERVICE_2888_IGNORE: 'true'
+            SERVICE_3888_IGNORE: 'true'
+            KAFKA_HEAP_OPTS: -Xmx512M -Xms512M
+            ZOO_MY_ID: 3
+            #ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=TMP-POC-AP02:2888:3888 server.3=TMP-POC-AP03:2888:3888
+            ZOO_SERVERS: server.1=TMP-POC-AP01:2888:3888;2181 server.2=TMP-POC-AP02:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+        logging:
+          driver: "json-file"
+          options:
+             max-size: "50m"
+             max-file: "10"
+  kafka3:
+        image: openjdk:8-jdk-slim
+        container_name: kafka3
+        hostname: kafka3
+        restart: always
+        ports:
+          - 9092:9092
+        extra_hosts:
+            - "TMP-POC-AP01:*.*.*.122"
+            - "TMP-POC-AP02:*.*.*.124"
+            - "TMP-POC-AP03:*.*.*.146"
+        environment:
+            - SERVICE_NAME=kafka
+            - SERVICE_TAGS=kafka
+        volumes:
+            - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+            - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+            - /var/maxwin/kafka/kafka-2.5.0:/var/maxwin/kafka
+            - /data/kafka-data:/data/kafka-data
+        working_dir: /var/maxwin/kafka
+        command: ["bin/kafka-server-start.sh", "config/server.properties"]
+        logging:
+          driver: "json-file"
+          options:
+             max-size: "50m"
+             max-file: "10"
+  monitor-srv:
+    image: cxhjet/realtime4monitor
+    container_name: monitor-srv
+    restart: always
+    environment:
+      CONSUL_HTTP_ADDR: *.*.*.146:8500
+      WEB_PORT : 30003
+      KONG_AUTO_REGISTER: 'true'
+      #CONSUL_AUTO_REGISTER: ${CONSUL_AUTO_REGISTER}
+      #  服務的tag
+      SERVICE_IGNORE: 'true'
+      # 服務的健康檢查，不需要加 ip:port
+      SERVICE_CHECK_HTTP: /monitor-srv/v1.0/health
+      # 20 秒，需要帶單位 s
+      SERVICE_CHECK_INTERVAL: 20s
+      # 5 秒，需要帶單位 s
+      SERVICE_CHECK_TIMEOUT: 5s
+      CACHE_TIME: 5
+      export LOG_LEVEL: 20
+    ports:
+      - 30003:30003
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - ./conf/translations:/var/realtime4monitor/app/translations
+      - ./conf/monitor-srv.yaml:/var/realtime4monitor/swagger/v1_0/monitor-srv.yaml
+    working_dir: /var/realtime4monitor
+    command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
