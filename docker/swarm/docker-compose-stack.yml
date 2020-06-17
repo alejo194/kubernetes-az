@@ -1,0 +1,158 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "6380:6380"
+    volumes:
+      - "/var/maxwin/conf/redis/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "/var/maxwin/conf/redis/data:/data"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  analyse_trips:
+    image: cxhjet/analysetrips
+    env_file:
+     - ./conf/com.env
+    #environment:
+    #  #  python程序通過這個變量找到consul
+    #  CONSUL_HTTP_ADDR: 10.40.201.11:8500
+    #  DATABASE_NAME : maxbus
+    #  LOG_LEVEL: 10
+    #  ANALYSE_TIME: 02:00
+    #  ARRIVESTOP_RATE: 0.5
+    #  SPLIT_TIME: 03:00
+    #  ADV_TIME: 180
+    #  RETAIN_LAST: 'false'
+    #  ANALYSE_TODAY: 'false'
+    #  SERVICE_IGNORE: 'true'
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - /etc/timezone:/etc/timezone
+      # 调试代码时，不用每次都重建镜像
+      #- .:/var/analyse_trips
+      - ./conf/analysetrips/config.yaml:/var/analysetrips/config.yaml
+    working_dir: /var/analysetrips
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+  rq-dashboard:
+    image: cxhjet/rq-dashboard:v1.0
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    environment:
+      - REDIS_URL=redis://redis:6380
+      #- REDIS_IP=10.40.201.13
+      #- REDIS_PORT=6380
+      - USERNAME=maxwin
+      - PASSWORD=maxwin.maxwin
+      - URL_PREFIX=/
+    depends_on:
+      - redis
+    ports:
+      - 85:80
+      #- 9181:9181
+      #- target: 80
+      #  published: 85
+      #  protocol: tcp
+      #  mode: host
+    #command: ['tini', '--', './autoexec.sh']
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+  #console_server:
+  #  image: cxhjet/python-alpine3.5:0.2.13
+  #  deploy:
+  #    replicas: 1
+  #    placement:
+  #      constraints: [node.role == manager]
+  #    restart_policy:
+  #      condition: on-failure
+  #  depends_on:
+  #    - redis
+  #  ports:
+  #    - 9120:9120
+  #   # - target: 9120
+  #   #   published: 9120
+  #   #   protocol: tcp
+  #   #   mode: host
+  #  volumes:
+  #    - ./console_server:/var/console_server
+  #    - ./conf/console_server/config.ini:/etc/maxwin/console_server/config.ini
+  #    - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+  #    - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+  #    - /etc/timezone:/etc/timezone
+  #  working_dir: /var/console_server
+  #  command: ["python3","run.py"]
+  #  logging:
+  #    driver: "json-file"
+  #    options:
+  #      max-size: "50m"
+  #      max-file: "10"
+  sync_db2redis:
+    image: syncdb2redis_sync_db2redis
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    env_file:
+     - ./conf/sync.env
+    #environment:
+    #  #  python程序通過這個變量找到consul
+    #  CONSUL_HTTP_ADDR: ${CONSUL_HTTP_ADDR} #192.168.101.88:8500
+    #  #redis key 的过期时间
+    #  REDIS_EXPIRETIME: ${REDIS_EXPIRETIME}
+    #  # 同步间隔时间，默认为60秒
+    #  SYNC_INTERVAL: ${SYNC_INTERVAL}
+    #  # 使用预排班表预估
+    #  #1:预排班表scheduledetail (gaoxiong)
+    #  #2:核定班表apprschedule (taoyuan)
+    #  #3:混合班表if have no scheduledetail then select apprschedule(taizhong)
+    #  EST_TYPE: ${EST_TYPE}
+    #  LOG_LEVEL: ${LOG_LEVEL}
+    #  # 预估时间服务的 host
+    #  EST_HOST: ${EST_HOST}
+    #  # 预估时间服务的 port
+    #  EST_PORT: ${EST_PORT}
+    #  DATABASE_NAME: ${DATABASE_NAME}
+    #  # GEO REDIS的的master，默认为 geo_master,可在run.sh中指定不同的服务
+    #  REDIS_GEO: ${REDIS_GEO}
+    #  REDIS: ${REDIS}
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/usr/share/zoneinfo/Asia/Taipei
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime/
+      - /etc/timezone:/etc/timezone
+      - ./sync_db2redis:/var/sync_db2redis
+    working_dir: /var/sync_db2redis
+    command: ["python3","run.py"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
