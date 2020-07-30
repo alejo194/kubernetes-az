@@ -1,0 +1,10 @@
+apiVersion: extension/v1beta1
+kind: Ingress
+metadata:
+  name: no-rules-map
+spec:
+  tls:
+    - secretName: testsecret
+  backend:
+    serviceName: s1
+    servicePort: 80

@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redisadmin
+  labels:
+    name: redisadmin
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    nodePort: 30001
+  selector:
+    name: redisadmin
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: redisadmin
+  labels:
+    name: redisadmin
+spec:
+  replicas: 1
+  selector:
+    name: redisadmin
+  template:
+    metadata:
+      labels:
+        name: redisadmin
+    spec:
+      containers:
+      - name: redisadmin
+        image: erikdubbelboer/phpredisadmin
+        env:
+        - name: REDIS_1_HOST
+          value: redis-master
+        ports:
+        - containerPort: 80
