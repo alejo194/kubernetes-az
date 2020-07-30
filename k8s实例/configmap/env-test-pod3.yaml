@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test-pod1
+spec:
+  containers:
+    - name: test-container
+      image: busybox
+      command: ["/bin/sh", "-c", "cat /etc/config/keys"]
+      volumesMounts:
+      - name: config-volume
+        mountPath: /etc/config
+   volumes:
+     - name: config-volume
+       configMap:
+         name: config
+         items:
+         - key: special.level
+           path: keys
+  restartPolicy: Never

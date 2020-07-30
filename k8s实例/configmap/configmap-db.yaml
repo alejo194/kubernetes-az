@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: default
+data:
+  host: "192.168.101.238"
+  port: "1433"
+  dbname: gxtest
+  dbdriver: mssql
+  user: sa
+  pw: "111"
