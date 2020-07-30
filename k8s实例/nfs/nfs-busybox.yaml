@@ -1,0 +1,30 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: nfs-busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: nfs-busybox
+  template:
+    metadata:
+      labels:
+        name: nfs-busybox
+    spec:
+      containers:
+      - image: 192.168.101.75:5000/k8s-containers/flask-py3.6:1.9
+        #command:
+          #- sh
+          #- -c
+          #- 'while true; do date > /mnt/index.html; hostname >> /mnt/index.html; sleep 10m; done'
+        imagePullPolicy: IfNotPresent
+        name: busybox
+        volumeMounts:
+          - name: nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: nfs
+        nfs:
+          path: /mnt/nfs-1
+          server: 192.168.101.79
