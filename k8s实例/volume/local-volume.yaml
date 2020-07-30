@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-pv
+  annotations:
+    "volume.alpha.kubernetes.io/node-affinity":'{
+        "requiredDuringSchedulingIgnoredDuringExecution":{
+            "nodeSelectorTerms":[
+                { "matchExpressions":[
+                      { "key": "kubernetes.io/hostname",
+                        "operator": "In",
+                        "values": ["example-node"]
+                       }
+                     ]}]}}'
+spec:
+  capatity:
+    storage: 100Gi
+  accessModes:
+  - ReadWriteOnce
+  persistenVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /mnt/disks/ssd1 
