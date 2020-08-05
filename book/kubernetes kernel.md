@@ -17,6 +17,9 @@
 
 
 #### work
+```bash
+Node上运行着kubernetes的kubelet,kube-proxy服务进程，这些服务进程负责Pod的创建、启动、监控、重启、销毁，以及实现软件模式的负载均衡器
+```
 + ***kubelet***
 
 + ***kube-proxy***
