@@ -24,3 +24,4 @@ Node上运行着kubernetes的kubelet,kube-proxy服务进程，这些服务进程
 
 + ***kube-proxy***
 
++ ***Docker Engine***
