@@ -12,7 +12,7 @@
 > 目标节点上。
 
 + ***Controller Manager***
-
+> K8s里所有资源对象的自动化控制中心
 + ***Scheduler***
 
 
