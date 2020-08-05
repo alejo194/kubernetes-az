@@ -13,9 +13,9 @@
 
 + ***Controller Manager***
 
-+ ***Scheduler***
---------------end master-----------------
---------------start work-----------------
++ ***Scheduler***</br>
+--------------end master-----------------</br>
+--------------start work-----------------</br>
 + ***kubelet***
 
 + ***kube-proxy***
