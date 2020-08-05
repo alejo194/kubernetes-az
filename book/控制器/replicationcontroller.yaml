@@ -22,3 +22,7 @@ spec:
     
 -----------------------
 kubectl create -f ****.yaml
+查看rc
+kubectl get rc
+查看pod
+kubectl get pods
