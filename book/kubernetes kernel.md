@@ -16,7 +16,7 @@
 + ***Scheduler***
 
 
-#### start work
+#### work
 + ***kubelet***
 
 + ***kube-proxy***
