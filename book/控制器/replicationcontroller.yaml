@@ -20,3 +20,5 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: "123456"
     
+-----------------------
+kubectl create -f ****.yaml
