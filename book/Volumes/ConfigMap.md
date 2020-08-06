@@ -1,3 +1,4 @@
+#### 配置文件集中化定义与管理  --  ConfigMap
 + ConfigMap将应用所需的配置信息与程序进行分离，这样就可以是应用程序被更好地复用，通过不同的配置能实现更灵活的功能。
 + 使用kubectl describe or kubectl get检索ConfigMap信息
 + 参考：https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
