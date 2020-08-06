@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend
+    matchExpressions:
+      - {key: tier, operator: In, values: {frontend}}
+  template:
+    metadata:
+      labels:
+        app: app-demo
+        tier: frontend
+    spec:
+      containers:
+      - name: tomcat-demo
+        image: tomcat
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        
+------
+1. 创建Deployment
+$ kubectl create -f xxx.yaml
+2. 查看Deployment
+$ kubectl get deployments
+NAME  DESIRED             CURRENT       UP-TO-DATE             AVAILABLE                   AGE
+      Pod副本的期望值      实际值        最新版本的Pod副本数    可用的Pod副本数
+3. Pod的水平扩展过程
+$ kubectl describe deployments 
