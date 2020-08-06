@@ -7,4 +7,8 @@ $ kubectl describe node <node名字>
 $ kubectl describe pod xxx
 4. Pod的动态缩放
 $ kubectl scale rc redis-slave --replica=3
+5. EndPoint列表
+$ kubectl get endpoints
+6. 查看Service被分配的Cluster IP及更多信息
+$ kubectl get svc xxxservice -o yaml
 ```
