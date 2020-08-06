@@ -1,0 +1,14 @@
+HPA 是Pod横向自动扩容，和RC，Deployment一样，属于一种资源对象。通过追踪分析RC控制所有目标Pod的负载变化情况，来确定是否需要针对性的调整目标Pod的副本数。
+--------
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: php-apache
+  namespace: default
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    kind: Deployment
+    name: php-apache
+  targetCPUUtilizationPercentage: 90
