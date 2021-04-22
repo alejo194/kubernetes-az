@@ -12,6 +12,7 @@
     - 注：连续且完全相同方为重复
 + 常和sort命令一起配合使用：
     - sort userlist.txt | uniq -c
+    - cat /var/log/httpd/access_log |cut -d" " -f1 |sort |uniq -c |sort -nr |head
 ##### sort排序工具
 + 常用命令选项
    - -u: 去除重复行
