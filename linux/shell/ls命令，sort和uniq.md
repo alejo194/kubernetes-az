@@ -30,3 +30,11 @@
 ##### paste 
 
 ##### cut -d' ' -f 5 /etc/passwd
+
+##### 复制对文件改变patch
++ diff 命令的输出被保存在一种叫做“补丁”的文件中
+    - 使用 -u 选项来输出“统一的（unified）”diff格式文件，最适用于补丁文件
++ patch 复制在其他文件中进行的改变（要谨慎使用）
+    - 适用 -b 选项来自自动备份改变了的文件
+    - $ diff -u foo.conf foo2.conf>foo.patch
+    - $ patch -b foo.conf foo.patch
