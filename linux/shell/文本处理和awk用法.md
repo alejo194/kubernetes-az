@@ -50,3 +50,12 @@ ENVIRON           调用Shell环境变量，格式：ENVIRON["变量名"]
    awk '$2!="XX"{print}' reg.txt
    awk 'NF>=2{print}' reg.txt
 ```
+##### 多个条件的组合
++ 逻辑比较测试
+    - && 逻辑与：期望多个条件都成立
+    - || 逻辑或：只要有一个条件成立即满足要求
+```bash
+   用例：
+   awk -F: '$3>=0&&$3<2{print $1,$3}' /etc/passwd
+   awk -F: '$3==1||$3==7{print $1,$3}' /etc/passwd
+```
