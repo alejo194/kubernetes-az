@@ -59,3 +59,13 @@ ENVIRON           调用Shell环境变量，格式：ENVIRON["变量名"]
    awk -F: '$3>=0&&$3<2{print $1,$3}' /etc/passwd
    awk -F: '$3==1||$3==7{print $1,$3}' /etc/passwd
 ```
+##### 变量的运算
++ 运算符
+    - +，-，*，/，%
+    - ++， --， +=， -=， *=， /=
+```bash
+   用例：
+   awk 'NR%2==1{print}' reg.txt
+   awk 'BEGIN{i=0}{i+=NF}END{print i}' reg.txt
+   seq 200|awk 'BEGIN{i=0}($0%3==0)&&($0%13==0){i++}END{print i}'
+```
