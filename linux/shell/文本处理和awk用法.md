@@ -30,3 +30,12 @@ ENVIRON           调用Shell环境变量，格式：ENVIRON["变量名"]
 + 行后处理，END{}
     - 处理完最后一行文本之后执行
     - 一般用来输出处理结果
+##### 使用正则条件
++ 正则表达式
+    - /正则表达式/
+    - ~ 匹配、 !~ 不匹配
+```bash
+   用例：
+   awk -F: '/^ro/{print}' /etc/passwd
+   awk -F: '$7!~/bash$/{print$1,$7}' /etc/passwd
+```
