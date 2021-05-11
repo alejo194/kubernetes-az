@@ -39,3 +39,14 @@ ENVIRON           调用Shell环境变量，格式：ENVIRON["变量名"]
    awk -F: '/^ro/{print}' /etc/passwd
    awk -F: '$7!~/bash$/{print$1,$7}' /etc/passwd
 ```
+##### 使用数值比较
++ 数值比较
+    - == 等于、 != 不等于
+    - > 大于、 >= 大于或等于
+    - < 小于、 <= 小于或等于
+```bash
+   用例：
+   awk 'NR==2{print}' reg.txt
+   awk '$2!="XX"{print}' reg.txt
+   awk 'NF>=2{print}' reg.txt
+```
