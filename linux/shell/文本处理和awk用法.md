@@ -69,3 +69,8 @@ ENVIRON           调用Shell环境变量，格式：ENVIRON["变量名"]
    awk 'BEGIN{i=0}{i+=NF}END{print i}' reg.txt
    seq 200|awk 'BEGIN{i=0}($0%3==0)&&($0%13==0){i++}END{print i}'
 ```
+##### if分支结构
+```bash
+   用例：
+   awk -F: 'BEGIN{i=0;j=0}{if($3<=500){i++}else{j++}}END{print i,j}' /etc/passwd
+```
