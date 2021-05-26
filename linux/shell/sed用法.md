@@ -25,3 +25,16 @@ s                     字符串替换                      s/old/new/    将每�
                                                      s/old/new/g   将所有的old都替换为new
 注：替换操作的分隔“/” 可改用其他字符，如#、&等，便于修改文件路径
 ```
+##### 输出文本
+```bash
+示例                                           含义解析
+sed -n 'p' a.txt                        输出所有行，等同于cat a.txt
+sed -n '4p' a.txt                       输出第4行
+sed -n '4,7p' a.txt                     输出第4~7行
+sed -n '4,+10p' a.txt                   输出第4行及其后的10行内容
+sed -n '/^bin/p' a.txt                  输出以bin开头的行
+sed -n 'p;n' a.txt                      输出奇数行，n表示读入下一行文本（隔行）
+sed -n 'n;p' a.txt                      输出偶数行，n表示读入下一行文本（隔行）
+sed -n '10;${n;p}' a.txt                输出第10行到末尾所有偶数行
+sed -n '$=' a.txt                       输出文件的行数
+```
