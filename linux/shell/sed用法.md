@@ -35,6 +35,6 @@ sed -n '4,+10p' a.txt                   输出第4行及其后的10行内容
 sed -n '/^bin/p' a.txt                  输出以bin开头的行
 sed -n 'p;n' a.txt                      输出奇数行，n表示读入下一行文本（隔行）
 sed -n 'n;p' a.txt                      输出偶数行，n表示读入下一行文本（隔行）
-sed -n '10;${n;p}' a.txt                输出第10行到末尾所有偶数行
+sed -n '10,${n;p}' a.txt                输出第10行到末尾所有偶数行
 sed -n '$=' a.txt                       输出文件的行数
 ```
