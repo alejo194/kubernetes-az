@@ -23,4 +23,9 @@ kubeadm alpha certs renew all
 1
 通过crontab定时更新证书
 0 0 15 10 * kubeadm alpha certs renew all
+
+证书过期kubectl命令无法使用
+# 更新客户端配置
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
