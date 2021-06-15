@@ -6,7 +6,9 @@ kubeadm 搭建https://www.cnblogs.com/dszazhy/p/14704087.html<br/>
          https://www.cnblogs.com/zhaoya2019/p/13032218.html<br/>
          https://github.com/HikoQiu/kubeadm-install-k8s<br/>
 软件负载均衡：<br/>         
-https://www.cnblogs.com/zhangmingcheng/p/13646907.html
+https://www.cnblogs.com/zhangmingcheng/p/13646907.html<br/>
+使用 kube-vip 搭建高可用 K8S 集群<br/>
+https://iswbm.com/358.html<br/>
 ##### 文档说明
 https://www.yuque.com/coolops/kubernetes/qmwb72 <br/>
 https://www.yuque.com/ssebank/ongd21/oiaa1g <br/>
