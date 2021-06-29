@@ -211,3 +211,5 @@ ls
 apt-get install ntpdate
 ntpdate time.windows.com
 apt-get install epel-release -y
+
+kubectl edit deployment coredns -n kube-system
