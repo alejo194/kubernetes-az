@@ -69,3 +69,14 @@ spec:
     path: /tmp
     server: 172.17.0.2
 ```
+##### 持久化演示说明 -  NFS
++ 1 安装NFS服务器
+```bash
+yum install -y nfs-common nfs-utils rpcbind
+mkdir /nfsdata
+chmod 666 /nfsdata
+chown nfsnobody /nfsdata
+cat /etc/exports
+    /nfsdata  *(rw,no_root_squash,no_all_squash,sync)
+```
++ 2 部署PV
