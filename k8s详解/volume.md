@@ -70,6 +70,8 @@ spec:
     server: 172.17.0.2
 ```
 ##### 持久化演示说明 -  NFS
+> PersistentVolume (PV)
+> 
 + 1 安装NFS服务器
 ```bash
 yum install -y nfs-common nfs-utils rpcbind
