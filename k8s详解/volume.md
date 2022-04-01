@@ -82,3 +82,19 @@ cat /etc/exports
     /nfsdata  *(rw,no_root_squash,no_all_squash,sync)
 ```
 + 2 部署PV
+```bash
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfspv1
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs
+  nfs:
+    path: /data/nfs
+    server: 10.66.66.10
+```
