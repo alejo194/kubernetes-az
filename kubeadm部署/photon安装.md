@@ -50,3 +50,11 @@ https://cloud.tencent.com/developer/ask/220173
 kubectl label node cassandra-2 softey.com/release-id=debian
 kubectl label node cassandra-2 softey.com/release-version-id=9
 ```
++ 80 photon os, 1 debian 导致work节点kubelet 报错 kuberuntime_manager.go:833] "CreatePodSandbox for pod failed" err="open /run/systemd/resolve/resolv.conf ...
+解决方案：
+```bash
+vi /var/lib/kubelet/config.yaml
+修改/run/systemd/resolve/resolv.conf 为/etc/resolv.conf
+
+$ systemctl restart kubelet.service
+```
