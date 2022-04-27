@@ -58,3 +58,16 @@ vi /var/lib/kubelet/config.yaml
 
 $ systemctl restart kubelet.service
 ```
++ photon os安装kubeadm 报错要加-nogpgcheck
+> yum install -y  kubectl kubeadm -nogpgcheck
+```bash
+vi /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+```
