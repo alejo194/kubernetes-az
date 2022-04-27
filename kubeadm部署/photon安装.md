@@ -43,3 +43,10 @@ Then you can join any number of worker nodes by running the following on each as
 kubeadm join 10.*.*.250:7443 --token dg9x447p.0cno6wkk27w1zrecdg \
 	--discovery-token-ca-cert-hash sha256:dg36be90d0ee2a7a2b21dea0e353efef6ebcf574d50e4f01484407bfb8ff3f075edg
 ```
+##### 不同的系统组成一个集群
+标签添加
+https://cloud.tencent.com/developer/ask/220173
+```bash
+kubectl label node cassandra-2 softey.com/release-id=debian
+kubectl label node cassandra-2 softey.com/release-version-id=9
+```
