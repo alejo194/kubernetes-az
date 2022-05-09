@@ -1,0 +1,1 @@
+每个Pod都会得到集群内的一个DNS域名，格式为[podname].[service name].[namespace].svc.cluster.local
