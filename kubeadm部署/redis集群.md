@@ -121,3 +121,9 @@ Waiting for the cluster to join
 [OK] New node added correctly.
 
 ```
+
+
+173
+```bash
+$ redis-cli --cluster  create redis-30009:30009  redis-30010:30010  redis-30011:30011  redis-30012:30012  redis-30013:30013   redis-30014:30014 --cluster-replicas 1
+```
