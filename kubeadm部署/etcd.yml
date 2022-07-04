@@ -1,0 +1,2 @@
+ crictl --runtime-endpoint unix:///run/containerd/containerd.sock  exec -it 74c1dc61e7495 sh
+ $etcdctl --cacert=/etc/kubernetes/pki/etcd/ca.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt member list
