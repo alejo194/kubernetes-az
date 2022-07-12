@@ -1,0 +1,13 @@
+1、基本环境配置
+   kubectl debuge
+   Sidecar
+   Volume
+   ConfigMap和Secret
+2、基本组件安装
+3、高可用组件安装
+4、集群初始化
+5、Calico安装
+6、Master节点
+7、Node节点
+8、Metics部署
+9、Dashboard部署
