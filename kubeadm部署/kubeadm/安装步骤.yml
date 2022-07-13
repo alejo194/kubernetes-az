@@ -4,6 +4,13 @@
    Volume
    ConfigMap和Secret
 2、基本组件安装
+   防火墙关闭
+   swap 交换区关闭
+   ntpdata 安装
+   所有节点升级系统并重启，此处升级没有升级内存
+   -- yum install wget jq panisc vim net-tools telnet yum-utils device-mapper-persistenet-data lvm2 -y
+   2.1 内核配置
+   CentOS7 需要升级
 3、高可用组件安装
 4、集群初始化
 5、Calico安装
