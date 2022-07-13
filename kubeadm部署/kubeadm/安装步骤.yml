@@ -11,6 +11,8 @@
    -- yum install wget jq panisc vim net-tools telnet yum-utils device-mapper-persistenet-data lvm2 -y
    2.1 内核配置
    CentOS7 需要升级
+   2.1 ipvsadm安装
+   -- yum install ipvsadm ipset sysstat conntrack libseccomp -y
 3、高可用组件安装
 4、集群初始化
 5、Calico安装
