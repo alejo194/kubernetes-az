@@ -121,7 +121,9 @@ Waiting for the cluster to join
 [OK] New node added correctly.
 
 ```
-
++ 201.80 最新版7.0.2 cluster 命令是 
++ kubectl exec redis-0 -it -n rediscluster -- bash
++ redis-cli --cluster create  redis-0.redisc-svc.rediscluster:6379 redis-1.redisc-svc.rediscluster:6379 redis-2.redisc-svc.rediscluster:6379 redis-3.redisc-svc.rediscluster:6379 redis-4.redisc-svc.rediscluster:6379 redis-5.redisc-svc.rediscluster:6379 --cluster-replicas 1
 
 173
 ```bash
