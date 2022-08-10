@@ -1,0 +1,10 @@
+RBAC:基于角色的访问控制。Role-Based Access Control, 他是一种基于企业内个人角色来管理一些资源的访问方法。
+
+Jenkins 使用基于角色的用户权限管理。
+
+RBAC：4种顶级资源。Role, ClusterRole, RoleBing, ClusterRoleBinding
+
+Role: 角色，包含一组权限的规则，没有拒绝规则，只是附加允许，Namespace隔离，只作用于命名空间内。
+ClusterRole: 和Role的区别，Role是只作用于命名空间内，ClusterRole作用用整个集群
+RoleBinding: 作用于命名空间内，将ClusterRole或者Role绑定到User, Group, ServiceAccount.
+ClusterRoleBinding: 作用于整个集群
