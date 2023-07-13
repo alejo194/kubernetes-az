@@ -8,6 +8,7 @@
     helm install -n zk kafka .
     helm list
     helm repo list
+    helm search repo bitnami/zookeeper -l
 ```
 
 ##### dashboard
