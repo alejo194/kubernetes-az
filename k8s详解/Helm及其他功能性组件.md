@@ -4,8 +4,8 @@
 ```bash
     helm install -n zk zookeeper .
     helm delete -n zk zookeeper
-    helm install -n zk zookeeper .
     helm install -n zk kafka .
+    helm delete -n zk kafka
     helm list
     helm repo list
     helm search repo bitnami/zookeeper -l
