@@ -1,0 +1,19 @@
+##### 分两部分
+###### 1，kube-system中staticPod证书升级
+###### 2，systemctl管理的kubelet证书shengj
+```bash
+Kubelet 客户端证书轮换失败 
+默认情况下，kubeadm 使用 /etc/kubernetes/kubelet.conf 中指定的 /var/lib/kubelet/pki/kubelet-client-current.pem 符号链接来配置 kubelet 自动轮换客户端证书。如果此轮换过程失败，你可能会在 kube-apiserver 日志中看到诸如 x509: certificate has expired or is not yet valid 之类的错误。要解决此问题，你必须执行以下步骤：
+
+从故障节点备份和删除 /etc/kubernetes/kubelet.conf 和 /var/lib/kubelet/pki/kubelet-client*。
+在集群中具有 /etc/kubernetes/pki/ca.key 的、正常工作的控制平面节点上 执行 kubeadm kubeconfig user --org system:nodes --client-name system:node:$NODE > kubelet.conf。 $NODE 必须设置为集群中现有故障节点的名称。 手动修改生成的 kubelet.conf 以调整集群名称和服务器端点， 或传递 kubeconfig user --config（此命令接受 InitConfiguration）。 如果你的集群没有 ca.key，你必须在外部对 kubelet.conf 中的嵌入式证书进行签名。
+
+将得到的 kubelet.conf 文件复制到故障节点上，作为 /etc/kubernetes/kubelet.conf。
+在故障节点上重启 kubelet（systemctl restart kubelet），等待 /var/lib/kubelet/pki/kubelet-client-current.pem 重新创建。
+手动编辑 kubelet.conf 指向轮换的 kubelet 客户端证书，方法是将 client-certificate-data 和 client-key-data 替换为：
+
+client-certificate: /var/lib/kubelet/pki/kubelet-client-current.pem
+client-key: /var/lib/kubelet/pki/kubelet-client-current.pem
+重新启动 kubelet。
+确保节点状况变为 Ready
+```
