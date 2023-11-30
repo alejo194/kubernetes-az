@@ -1,0 +1,12 @@
+kubelet自动更新
+https://www.jianshu.com/p/a3b2bf1db87b
+官网：https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/kubelet-tls-bootstrapping/
+-----
+ 2034  kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-cluster bootstrap --server='https://192.168.101.76:6443' --certificate-authority=/etc/kubernetes/pki/ca.crt
+ 2037  kubeadm token create
+ 2038  kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-credentials kubelet-bootstrap --token=zxusau.ra8ntagqks4eq6by
+ 2040  kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-context bootstrap --user=kubelet-bootstrap --cluster=bootstrap
+ 2042  kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig use-context bootstrap
+       vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+  2063  systemctl daemon-reload
+ 2064  systemctl restart kubelet
